@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "420464524498",
+    "project_id": "meal-planning-fe26a",
+    "storage_bucket": "meal-planning-fe26a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:420464524498:android:2ffbefdf10c8ee0a46810b",
+        "android_client_info": {
+          "package_name": "com.gloabalsoftlabs.meal_planning"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "420464524498-emnp0okf1gth8djhkbojr2t5ksbiot2u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOoTBdaVDys50Cj6blgV-WtebGfd548wk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "420464524498-emnp0okf1gth8djhkbojr2t5ksbiot2u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "420464524498-9r24tm2ku28degttnvclkmqljk2ui0to.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mealPlanning"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

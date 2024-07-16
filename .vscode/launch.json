@@ -1,0 +1,51 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+
+        {
+            "name": "meal_planning",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "meal_planning (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "meal_planning (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "realme",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "M7MRVG59KRV8QSYX"
+        },
+        {
+            "name": "emulator",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "emulator-5554"
+        },
+        {
+            "name": "chrome",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "chrome"
+        },
+    ],
+    "compounds": [
+        {
+            "name": "All Devices",
+            "configurations": ["M7MRVG59KRV8QSYX", "emulator-5554", "chrome"],
+        }
+    ]
+}
