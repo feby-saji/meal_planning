@@ -53,21 +53,21 @@ class AccountScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 50),
                   //
-                  OptionTileWidget(
-                      iconPath: 'assets/icons/app_icons/premium1.png',
-                      title: 'Go Premium',
-                      onTap: () async {
-                        if (userType == UserType.premium) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const OnPremiumPlanScreen(),
-                            ),
-                          );
-                        } else {
-                          // await presentPayWall();
-                          context.read<UserTypeBloc>().add(CheckUserType());
-                        }
-                      }),
+                  // OptionTileWidget(
+                  //     iconPath: 'assets/icons/app_icons/premium1.png',
+                  //     title: 'Go Premium',
+                  //     onTap: () async {
+                  //       if (userType == UserType.premium) {
+                  //         Navigator.of(context).push(
+                  //           MaterialPageRoute(
+                  //             builder: (context) => const OnPremiumPlanScreen(),
+                  //           ),
+                  //         );
+                  //       } else {
+                  //         // await presentPayWall();
+                  //         context.read<UserTypeBloc>().add(CheckUserType());
+                  //       }
+                  //     }),
 
                   OptionTileWidget(
                     iconPath: 'assets/icons/app_icons/people.png',
@@ -77,11 +77,11 @@ class AccountScreen extends StatelessWidget {
                       //   // await presentPayWall();
                       //   context.read<UserTypeBloc>().add(CheckUserType());
                       // } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const FamilyScreen()),
-                        );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const FamilyScreen()),
+                      );
                       // }
                     },
                   ),
@@ -121,8 +121,7 @@ class AccountScreen extends StatelessWidget {
                   OptionTileWidget(
                       iconPath: 'assets/icons/app_icons/gmail.png',
                       title: 'Feedback',
-                      onTap: () =>
-                          openGmailWithSubject('App Feedback', context)),
+                      onTap: () => openGmailWithSubject(context)),
 
                   OptionTileWidget(
                     iconPath: 'assets/icons/app_icons/log-out.png',
@@ -132,7 +131,7 @@ class AccountScreen extends StatelessWidget {
                     },
                   ),
                   const Spacer(),
-                  const Text('version 1.10.0'),
+                  const Text('version 1.14.0'),
                   const SizedBox(height: 50),
                 ],
               ),

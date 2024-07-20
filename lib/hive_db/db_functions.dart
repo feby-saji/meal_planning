@@ -79,8 +79,6 @@ class HiveDb {
         if (initialLink != null) {
           handleDeepLink(initialLink.link, context);
         } else {
-          // init gemini api
-          await Gemini().initGemini();
           navigator.pushReplacement(
             MaterialPageRoute(
               builder: (context) => ShowCaseWidget(

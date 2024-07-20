@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-void showCustomSnackbar(BuildContext context) {
+void showCustomSnackbar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       backgroundColor: Colors.blueGrey[900], // Custom background color
-      content: const Row(
+      content: Row(
         children: [
-          Icon(
+          const Icon(
             Icons.check_circle,
             color: Colors.greenAccent,
           ),
-          SizedBox(width: 12.0),
+          const SizedBox(width: 12.0),
           Flexible(
             child: Text(
-              'Family ID copied',
-              style: TextStyle(
+              text,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16.0,
               ),

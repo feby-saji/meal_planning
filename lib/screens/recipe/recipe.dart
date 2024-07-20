@@ -61,7 +61,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                     return _buildPremiumUser(sizeConfig, context);
                   } else if (state is FreeUserState) {
                     return const OnFreePLanScreen();
-                  }else if (state is RecipeLoadFailedState) {
+                  } else if (state is RecipeLoadFailedState) {
                     return const Text('no recipees');
                   }
                   return const Center(
@@ -75,7 +75,6 @@ class _RecipeScreenState extends State<RecipeScreen> {
       ],
     );
   }
-
 
   Column _buildPremiumUser(SizeConfig sizeConfig, BuildContext context) {
     return Column(
@@ -111,13 +110,14 @@ class _RecipeScreenState extends State<RecipeScreen> {
     );
   }
 
-  Widget _buildStateWidget(RecipeState state,
-      BuildContext context,
-      SizeConfig sizeConfig,) {
+  Widget _buildStateWidget(
+    RecipeState state,
+    BuildContext context,
+    SizeConfig sizeConfig,
+  ) {
     if (state is RecipeLoadingState) {
       return _buildLoadingCircleProgressInd(context);
-    } else
-      if (state is RecipeLoadSuccessState) {
+    } else if (state is RecipeLoadSuccessState) {
       allRecipes.clear();
       allRecipes.addAll(state.recipes);
       return _buildSuccessWidget(state.recipes, context, sizeConfig);
@@ -133,12 +133,16 @@ class _RecipeScreenState extends State<RecipeScreen> {
   }
 
   Widget _buildLoadingCircleProgressInd(BuildContext context) {
-    return Center(child: CircularProgressIndicator()); // Return the CircularProgressIndicator wrapped in Center
+    return const Center(
+        child:
+            CircularProgressIndicator()); // Return the CircularProgressIndicator wrapped in Center
   }
 
-  Widget _buildSuccessWidget(List<RecipeModel> recipes,
-      BuildContext context,
-      SizeConfig sizeConfig,) {
+  Widget _buildSuccessWidget(
+    List<RecipeModel> recipes,
+    BuildContext context,
+    SizeConfig sizeConfig,
+  ) {
     if (navigatorPop) Navigator.pop(context);
     navigatorPop = false;
     return Expanded(
@@ -152,27 +156,25 @@ class _RecipeScreenState extends State<RecipeScreen> {
             return KRecipeWidget(
               isFav: recipe.isFav,
               title: recipe.title,
-              imgPath: recipe.img,
+              imgPath: recipe.img.isNotEmpty
+                  ? recipe.img
+                  : 'assets/icons/app_icons/dish.png',
               sizeConfig: sizeConfig,
-              onTap: () =>
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            DetailedRecipeScreen(recipe: recipe)),
-                  ),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context) => DetailedRecipeScreen(recipe: recipe)),
+              ),
               updateFav: () {
                 context.read<RecipeBloc>().add(UpdateFavouriteEvent(
-                  isFav: !recipe.isFav,
-                  recipe: recipe,
-                ));
+                      isFav: !recipe.isFav,
+                      recipe: recipe,
+                    ));
               },
-              onLongPress: () =>
-                  showDeleteConfirmation(
-                      context: context,
-                      contetText:
+              onLongPress: () => showDeleteConfirmation(
+                  context: context,
+                  contetText:
                       'Are you sure you want to delete "${recipe.title}"?',
-                      onPressed: () =>
-                      [
+                  onPressed: () => [
                         context
                             .read<RecipeBloc>()
                             .add(DeleteRecipeEvent(recipe: recipe)),
@@ -191,9 +193,11 @@ class _RecipeScreenState extends State<RecipeScreen> {
     return Expanded(child: Center(child: Text(err)));
   }
 
-  Widget _buildFetchingFailedWidget(String err,
-      BuildContext context,
-      SizeConfig sizeConfig,) {
+  Widget _buildFetchingFailedWidget(
+    String err,
+    BuildContext context,
+    SizeConfig sizeConfig,
+  ) {
     if (navigatorPop) Navigator.pop(context);
     navigatorPop = false;
     return allRecipes.isEmpty

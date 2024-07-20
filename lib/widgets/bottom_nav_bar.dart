@@ -19,11 +19,10 @@ class BottomNavBarWidget extends StatelessWidget {
               BottomNavigationBarItem(
                   icon: Icon(Icons.restaurant_menu), label: ''),
               BottomNavigationBarItem(icon: Icon(Icons.add_box), label: ''),
-              BottomNavigationBarItem(icon: Icon(Icons.add_box), label: ''),
+              BottomNavigationBarItem(icon: Icon(Icons.smart_toy), label: ''),
             ],
             onTap: (ind) {
               navBarInd.value = ind;
-              // controllerAni.forward(from: 0);
               navBarInd.notifyListeners();
             },
           );

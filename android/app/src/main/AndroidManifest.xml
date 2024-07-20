@@ -43,7 +43,14 @@
                     android:scheme="https"
                     android:host="com.globalsoftlabs.meal_planning" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="mailto" />
+            </intent-filter>
         </activity>
+        
 
         <!-- Meta-data for Flutter embedding -->
         <meta-data

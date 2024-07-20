@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_planning/screens/generate_recipe.dart/bloc/generate_recipe_bloc.dart';
 import 'package:meal_planning/screens/generate_recipe.dart/functions/functions.dart';
 import 'package:meal_planning/screens/generate_recipe.dart/functions/prompt_function.dart';
+import 'package:meal_planning/utils/styles.dart';
 
 class CreateRecipeScreen extends StatelessWidget {
   const CreateRecipeScreen({super.key});
@@ -13,6 +14,7 @@ class CreateRecipeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: kClrAccent,
         title: const Text('Create a recipe'),
         leading: const Padding(
           padding: EdgeInsets.only(left: 10),
@@ -68,15 +70,43 @@ class CreateRecipeScreen extends StatelessWidget {
                   onPressed: () => context
                       .read<GenerateRecipeBloc>()
                       .add(ResetPromptEvent()),
-                  icon: const Icon(Icons.refresh),
-                  label: const Text('Reset prompt'),
+                  icon: Icon(
+                    Icons.refresh,
+                    color: kClrAccent,
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 51, 60,
+                        51), // Set your custom background color here
+                  ),
+                  label: Text(
+                    'Reset fields',
+                    style: TextStyle(color: kClrAccent),
+                  ),
                 ),
                 ElevatedButton.icon(
-                  onPressed: () => context
-                      .read<GenerateRecipeBloc>()
-                      .add(SubmitPromptEvent()),
-                  icon: const Icon(Icons.send),
-                  label: const Text('Submit prompt'),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => const Dialog(
+                              backgroundColor: Colors.transparent,
+                              child: Center(child: CircularProgressIndicator()),
+                            ));
+                    context
+                        .read<GenerateRecipeBloc>()
+                        .add(SubmitPromptEvent(context: context));
+                  },
+                  icon: Icon(
+                    Icons.send,
+                    color: kClrAccent,
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 51, 60,
+                        51), // Set your custom background color here
+                  ),
+                  label: Text(
+                    'create Recipe',
+                    style: TextStyle(color: kClrAccent),
+                  ),
                 ),
               ],
             ),

@@ -1,9 +1,14 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:meal_planning/models/hive_models/recipe_model.dart';
 import 'package:meal_planning/models/prompt.dart';
 import 'package:meal_planning/screens/generate_recipe.dart/functions/prompt_function.dart';
+import 'package:meal_planning/screens/recipe/detailed_recipe.dart';
+import 'package:meal_planning/screens/recipe/recipe.dart';
+import 'package:meal_planning/widgets/error_snackbar.dart';
 import 'package:meta/meta.dart';
 
 part 'generate_recipe_event.dart';
@@ -63,8 +68,20 @@ class GenerateRecipeBloc extends Bloc<GenerateRecipeEvent, RecipeState> {
   }
 
   _submitPromptEvent(SubmitPromptEvent event, Emitter<RecipeState> emit) async {
-      await Gemini().generateRecipe(state.prompt);
-    
+    var result = await Gemini().generateRecipe(state.prompt);
+    if (result is RecipeModel) {
+      Navigator.of(event.context).pushReplacement(
+        MaterialPageRoute(
+            builder: (context) => DetailedRecipeScreen(
+                  recipe: result,
+                  showSaveIcon: true,
+                  goToRecipeScrn: true,
+                )),
+      );
+    } else {
+      showErrorSnackbar(event.context, 'fetch failed! try again $result');
+      Navigator.of(event.context).pop();
+    }
   }
 
   _resetPromptEvent(ResetPromptEvent event, Emitter<RecipeState> emit) {

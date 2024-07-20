@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:hive_flutter/hive_flutter.dart';
 part 'recipe_model.g.dart';
 
@@ -80,7 +82,7 @@ class RecipeModel {
 
   factory RecipeModel.fromJsonGemini(Map<String, dynamic> json) {
     return RecipeModel(
-      img: json['reference_image'],
+      img: '',
       title: json['title'],
       steps: List<String>.from(json['instructions']),
       isFav: false,

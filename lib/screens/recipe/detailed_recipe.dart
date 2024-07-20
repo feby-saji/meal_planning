@@ -1,15 +1,22 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:meal_planning/hive_db/db_functions.dart';
 import 'package:meal_planning/models/hive_models/recipe_model.dart';
+import 'package:meal_planning/screens/main_screen/main_screen.dart';
 import 'package:meal_planning/screens/recipe/widgets/tab1.dart';
 import 'package:meal_planning/screens/recipe/widgets/tab3.dart';
 import 'package:meal_planning/utils/styles.dart';
+import 'package:meal_planning/widgets/show_dialog.dart';
 
 class DetailedRecipeScreen extends StatelessWidget {
   RecipeModel recipe;
+  bool showSaveIcon = false;
+  bool goToRecipeScrn = false;
   DetailedRecipeScreen({
-    required this.recipe,
     super.key,
+    required this.recipe,
+    this.showSaveIcon = false,
+    this.goToRecipeScrn = false,
   });
 
   @override
@@ -26,16 +33,22 @@ class DetailedRecipeScreen extends StatelessWidget {
           padding: const EdgeInsets.only(top: 45, left: 10, right: 10),
           child: Column(
             children: [
-              _buildRow(context, recipe.title),
+              _buildRow(context, recipe.title, showSaveIcon),
               const SizedBox(height: 10),
               ClipRRect(
                 borderRadius: BorderRadius.circular(30),
-                child: Image.file(
-                  File(recipe.img),
-                  width: 300,
-                  height: 200,
-                  fit: BoxFit.cover,
-                ),
+                child: recipe.img.isNotEmpty
+                    ? Image.file(
+                        File(recipe.img),
+                        width: 300,
+                        height: 200,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        'assets/images/chef_rat.png',
+                        width: 200,
+                        height: 250,
+                      ),
               ),
               const TabBar(tabs: tabs),
               const SizedBox(height: 20),
@@ -64,11 +77,20 @@ class DetailedRecipeScreen extends StatelessWidget {
     );
   }
 
-  Row _buildRow(BuildContext context, String recipeName) {
+  Row _buildRow(BuildContext context, String recipeName, bool saveIcon) {
     return Row(
       children: [
         GestureDetector(
-          onTap: () => Navigator.pop(context),
+          onTap: () {
+            if (goToRecipeScrn) {
+              navBarInd.value = 2;
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => MainScreen()),
+              );
+            } else {
+              Navigator.pop(context);
+            }
+          },
           child: const Icon(
             Icons.chevron_left,
             weight: 0.8,
@@ -85,6 +107,18 @@ class DetailedRecipeScreen extends StatelessWidget {
             ),
           ),
         ),
+        GestureDetector(
+          onTap: () async {
+            showSaveDialog(context, recipe);
+          },
+          child: Visibility(
+            visible: saveIcon,
+            child: const Icon(
+              Icons.save,
+              color: Colors.green,
+            ),
+          ),
+        )
       ],
     );
   }
@@ -92,7 +126,7 @@ class DetailedRecipeScreen extends StatelessWidget {
 
 Widget buildTab2(BuildContext context, RecipeModel recipe) {
   return ListView.builder(
-      padding: EdgeInsets.all(0),
+      padding: const EdgeInsets.all(0),
       itemCount: recipe.ingredients?.length ?? 0,
       itemBuilder: (context, ind) {
         String ing = recipe.ingredients?[ind] ?? '_';

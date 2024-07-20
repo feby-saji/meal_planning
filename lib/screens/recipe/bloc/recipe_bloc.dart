@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:meal_planning/hive_db/db_functions.dart';
 import 'package:meal_planning/models/hive_models/recipe_model.dart';
 import 'package:meal_planning/repository/get_img.dart';
 import 'package:meal_planning/repository/recipe_repo.dart';
+import 'package:meal_planning/screens/family/widgets/snackbar.dart';
 
 import '../../../functions/network_connection.dart';
 part 'recipe_event.dart';
@@ -22,8 +24,16 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     on<UpdateFavouriteEvent>(_updateFav);
     on<SortRecipesEvent>(_sortRecipes);
     on<SearchRecipesEvent>(_searchRecipes);
+    on<SaveGeneratedRecipe>(_saveGeneratedRecipe);
   }
 
+  _saveGeneratedRecipe(
+      SaveGeneratedRecipe event, Emitter<RecipeState> emit) async {
+    List<RecipeModel> recipes = await HiveDb.addNewRecipe(event.recipe);
+    showCustomSnackbar(event.context, 'recipe saved');
+
+    return emit(RecipeLoadSuccessState(recipes: recipes));
+  }
 
   _deleteRecipe(DeleteRecipeEvent event, Emitter<RecipeState> emit) async {
     emit(RecipeLoadingState());
@@ -61,24 +71,25 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   _addRecipe(AddNewRecipeEvent event, Emitter<RecipeState> emit) async {
     if (await connectedToInternet()) {
       emit(RecipeLoadingState());
-    dynamic result = await recipeRepository.getRecipeContent(event.url);
+      dynamic result = await recipeRepository.getRecipeContent(event.url);
 
-    if (result is RecipeModel) {
-      // download and compress the image
-      String? imgPath = await downloadCompressAndGetPath(result.img);
+      if (result is RecipeModel) {
+        // download and compress the image
+        String? imgPath = await downloadCompressAndGetPath(result.img);
 
-      if (imgPath != null) {
-        result.img = imgPath;
-        List<RecipeModel> recipes = await HiveDb.addNewRecipe(result);
+        if (imgPath != null) {
+          result.img = imgPath;
+          List<RecipeModel> recipes = await HiveDb.addNewRecipe(result);
 
-        return emit(RecipeLoadSuccessState(recipes: recipes));
+          return emit(RecipeLoadSuccessState(recipes: recipes));
+        } else {
+          return emit(
+              RecipeFetchingFailedState(err: 'failed to fetch. Try again'));
+        }
       } else {
-        return emit(
-            RecipeFetchingFailedState(err: 'failed to fetch. Try again'));
+        return emit(RecipeFetchingFailedState(err: result));
       }
     } else {
-      return emit(RecipeFetchingFailedState(err: result));
-    }}else{
       return emit(NoInternetRecipeState());
     }
   }

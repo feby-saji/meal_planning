@@ -23,6 +23,9 @@ class UpdateStapleIngredientsEvent extends GenerateRecipeEvent {
   UpdateStapleIngredientsEvent({this.stapleIngresient});
 }
 
-class SubmitPromptEvent extends GenerateRecipeEvent {}
+class SubmitPromptEvent extends GenerateRecipeEvent {
+  BuildContext context;
+  SubmitPromptEvent({required this.context});
+}
 
 class ResetPromptEvent extends GenerateRecipeEvent {}

@@ -5,7 +5,6 @@ sealed class RecipeEvent {}
 
 class LoadRecipesEvent extends RecipeEvent {}
 
-
 class SearchRecipesEvent extends RecipeEvent {
   // bool fav;
   String val;
@@ -30,6 +29,12 @@ class DeleteRecipeEvent extends RecipeEvent {
 class AddNewRecipeEvent extends RecipeEvent {
   String url;
   AddNewRecipeEvent({required this.url});
+}
+
+class SaveGeneratedRecipe extends RecipeEvent {
+  BuildContext context;
+  RecipeModel recipe;
+  SaveGeneratedRecipe({required this.recipe,required this.context});
 }
 
 class UpdateFavouriteEvent extends RecipeEvent {
