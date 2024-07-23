@@ -55,7 +55,6 @@ class MealPlanScreen extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () async {
-              
                         _buildShowDialog(
                           context,
                           DateTime.now().add(Duration(days: ind)),
@@ -215,17 +214,26 @@ Expanded _buildSearchResults(
   );
 }
 
+
+
 ListTile _buildResultMealTile(
     RecipeModel recipe, BuildContext context, DateTime date) {
   return ListTile(
     leading: ClipRRect(
       borderRadius: BorderRadius.circular(50),
-      child: Image.file(
-        File(recipe.img),
-        height: 40,
-        width: 40,
-        fit: BoxFit.cover,
-      ),
+      child: recipe.img.isNotEmpty
+          ? Image.file(
+              File(recipe.img),
+              height: 40,
+              width: 40,
+              fit: BoxFit.cover,
+            )
+          : Image.asset(
+              'assets/images/chef_rat.png',
+              height: 40,
+              width: 40,
+              fit: BoxFit.cover,
+            ),
     ),
     //
     title: Text(

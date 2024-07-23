@@ -37,7 +37,9 @@ class KMealTileWidget extends StatelessWidget {
         //
         child: Row(
           children: [
-            imgPath != null ? buildRecipeImage() : buildDefaultImage(),
+            imgPath != null && imgPath!.isNotEmpty
+                ? buildRecipeImage()
+                : buildDefaultImage(),
             const SizedBox(width: 10),
             _buildMealTitle(),
             const Spacer(),

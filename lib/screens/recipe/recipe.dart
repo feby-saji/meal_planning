@@ -156,9 +156,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
             return KRecipeWidget(
               isFav: recipe.isFav,
               title: recipe.title,
-              imgPath: recipe.img.isNotEmpty
-                  ? recipe.img
-                  : 'assets/icons/app_icons/dish.png',
+              imgPath: recipe.img,
               sizeConfig: sizeConfig,
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(

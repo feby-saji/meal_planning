@@ -1,6 +1,6 @@
 {
-    "name": "meal_planning",
-    "short_name": "meal_planning",
+    "name": "demo",
+    "short_name": "demo",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

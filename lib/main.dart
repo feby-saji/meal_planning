@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:meal_planning/blocs/user_type_bloc/bloc/user_type_bloc.dart';
 import 'package:meal_planning/firebase_options.dart';
@@ -45,7 +44,6 @@ void main() async {
     ..registerAdapter(FamilyAdapter());
   // disabled revenuw cat
   // await revenuwCatConfig();
-    await dotenv.load(fileName: "env.env");
 
   runApp(const MyApp());
 }

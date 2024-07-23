@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_planning/screens/generate_recipe.dart/bloc/generate_recipe_bloc.dart';
 import 'package:meal_planning/screens/generate_recipe.dart/functions/functions.dart';
-import 'package:meal_planning/screens/generate_recipe.dart/functions/prompt_function.dart';
 import 'package:meal_planning/utils/styles.dart';
 
 class CreateRecipeScreen extends StatelessWidget {
@@ -15,7 +13,7 @@ class CreateRecipeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kClrAccent,
-        title: const Text('Create a recipe'),
+        title: const Text('Create a recipe using AI'),
         leading: const Padding(
           padding: EdgeInsets.only(left: 10),
           child: CircleAvatar(
@@ -29,24 +27,24 @@ class CreateRecipeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
-            const Text('I have these ingredients:'),
+            const Text('Image of the ingredients:'),
             const SizedBox(height: 8),
             _buildImageAddingSection(context),
             //
             const SizedBox(height: 16),
-            const Text('I have these ingredients:'),
+            const Text('Ingredients you have:'),
             const SizedBox(height: 8),
             _buildStapleIngredients(),
             const SizedBox(height: 16),
-            const Text("I'm in the mood for:"),
+            const Text("Cuisine:"),
             const SizedBox(height: 8),
             _buildCuisineChips(),
             const SizedBox(height: 16),
-            const Text('I have the following dietary restrictions:'),
+            const Text('If any dietary restrictions:'),
             const SizedBox(height: 8),
             _buildDietaryRestrictionChips(),
             const SizedBox(height: 16),
-            const Text('Add additional context...'),
+            const Text('Add any details (Optional)'),
             const SizedBox(height: 8),
             TextField(
               maxLines: 3,

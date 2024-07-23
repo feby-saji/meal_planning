@@ -87,7 +87,7 @@ class KRecipeWidget extends StatelessWidget {
 
   Image buildDefaultImage() {
     return Image.asset(
-      'assets/icons/app_icons/dish.png',
+      'assets/images/chef_rat.png',
       width: 30,
       height: 30,
     );
