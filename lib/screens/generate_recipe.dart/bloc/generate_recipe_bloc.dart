@@ -14,9 +14,10 @@ import 'package:meta/meta.dart';
 part 'generate_recipe_event.dart';
 part 'generate_recipe_state.dart';
 
-class GenerateRecipeBloc extends Bloc<GenerateRecipeEvent, RecipeState> {
+class GenerateRecipeBloc
+    extends Bloc<GenerateRecipeEvent, GenerateRecipeState> {
   GenerateRecipeBloc()
-      : super(RecipeState(
+      : super(GenerateRecipeState(
             prompt: PromptModel(
           images: [],
           dietaryRestrictions: [],
@@ -30,21 +31,22 @@ class GenerateRecipeBloc extends Bloc<GenerateRecipeEvent, RecipeState> {
     on<ResetPromptEvent>(_resetPromptEvent);
   }
 
-  _updateImageEvent(UpdateImageEvent event, Emitter<RecipeState> emit) {
+  _updateImageEvent(UpdateImageEvent event, Emitter<GenerateRecipeState> emit) {
     print('/////// updating image event');
     PromptModel updatedPrompt = state.prompt;
     updatedPrompt.images.add(event.img);
-    return emit(RecipeState(prompt: updatedPrompt));
+    return emit(GenerateRecipeState(prompt: updatedPrompt));
   }
 
-  _updateCuisineEvent(UpdateCuisineEvent event, Emitter<RecipeState> emit) {
+  _updateCuisineEvent(
+      UpdateCuisineEvent event, Emitter<GenerateRecipeState> emit) {
     PromptModel updatedPrompt = state.prompt;
     updatedPrompt.cuisine = event.cuisine!;
-    return emit(RecipeState(prompt: updatedPrompt));
+    return emit(GenerateRecipeState(prompt: updatedPrompt));
   }
 
   _updateDietaryRestrictionsEvent(
-      UpdateDietaryRestrictionsEvent event, Emitter<RecipeState> emit) {
+      UpdateDietaryRestrictionsEvent event, Emitter<GenerateRecipeState> emit) {
     PromptModel updatedPrompt = state.prompt;
     if (updatedPrompt.dietaryRestrictions.contains(event.dietaryRestrictions)) {
       updatedPrompt.dietaryRestrictions
@@ -52,11 +54,11 @@ class GenerateRecipeBloc extends Bloc<GenerateRecipeEvent, RecipeState> {
     } else {
       updatedPrompt.dietaryRestrictions.add(event.dietaryRestrictions);
     }
-    return emit(RecipeState(prompt: updatedPrompt));
+    return emit(GenerateRecipeState(prompt: updatedPrompt));
   }
 
   _updateStapleIngredientsEvent(
-      UpdateStapleIngredientsEvent event, Emitter<RecipeState> emit) {
+      UpdateStapleIngredientsEvent event, Emitter<GenerateRecipeState> emit) {
     PromptModel updatedPrompt = state.prompt;
     if (updatedPrompt.stapleIngredients.contains(event.stapleIngresient)) {
       updatedPrompt.stapleIngredients
@@ -64,10 +66,11 @@ class GenerateRecipeBloc extends Bloc<GenerateRecipeEvent, RecipeState> {
     } else {
       updatedPrompt.stapleIngredients.add(event.stapleIngresient);
     }
-    return emit(RecipeState(prompt: updatedPrompt));
+    return emit(GenerateRecipeState(prompt: updatedPrompt));
   }
 
-  _submitPromptEvent(SubmitPromptEvent event, Emitter<RecipeState> emit) async {
+  _submitPromptEvent(
+      SubmitPromptEvent event, Emitter<GenerateRecipeState> emit) async {
     var result = await Gemini().generateRecipe(state.prompt);
     if (result is RecipeModel) {
       Navigator.of(event.context).pushReplacement(
@@ -84,7 +87,7 @@ class GenerateRecipeBloc extends Bloc<GenerateRecipeEvent, RecipeState> {
     }
   }
 
-  _resetPromptEvent(ResetPromptEvent event, Emitter<RecipeState> emit) {
+  _resetPromptEvent(ResetPromptEvent event, Emitter<GenerateRecipeState> emit) {
     PromptModel updatedPrompt = state.prompt
       ..additionalContext = ''
       ..cuisine = ''
@@ -92,6 +95,6 @@ class GenerateRecipeBloc extends Bloc<GenerateRecipeEvent, RecipeState> {
       ..stapleIngredients = []
       ..images = [];
 
-    return emit(RecipeState(prompt: updatedPrompt));
+    return emit(GenerateRecipeState(prompt: updatedPrompt));
   }
 }

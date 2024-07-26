@@ -29,10 +29,14 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
 
   _saveGeneratedRecipe(
       SaveGeneratedRecipe event, Emitter<RecipeState> emit) async {
-    List<RecipeModel> recipes = await HiveDb.addNewRecipe(event.recipe);
-    showCustomSnackbar(event.context, 'recipe saved');
-
-    return emit(RecipeLoadSuccessState(recipes: recipes));
+    bool exists = await HiveDb.checkIfRecipeExists(event.recipe);
+    if (!exists) {
+      List<RecipeModel> recipes = await HiveDb.addNewRecipe(event.recipe);
+      showCustomSnackbar(event.context, 'recipe saved');
+      return emit(RecipeLoadSuccessState(recipes: recipes));
+    } else {
+      return emit(RecipeFetchingFailedState(err: 'recipe already added'));
+    }
   }
 
   _deleteRecipe(DeleteRecipeEvent event, Emitter<RecipeState> emit) async {
@@ -71,6 +75,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   _addRecipe(AddNewRecipeEvent event, Emitter<RecipeState> emit) async {
     if (await connectedToInternet()) {
       emit(RecipeLoadingState());
+
       dynamic result = await recipeRepository.getRecipeContent(event.url);
 
       if (result is RecipeModel) {
@@ -78,10 +83,15 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
         String? imgPath = await downloadCompressAndGetPath(result.img);
 
         if (imgPath != null) {
-          result.img = imgPath;
-          List<RecipeModel> recipes = await HiveDb.addNewRecipe(result);
+          bool exists = await HiveDb.checkIfRecipeExists(result);
+          if (!exists) {
+            result.img = imgPath;
+            List<RecipeModel> recipes = await HiveDb.addNewRecipe(result);
 
-          return emit(RecipeLoadSuccessState(recipes: recipes));
+            return emit(RecipeLoadSuccessState(recipes: recipes));
+          } else {
+            return emit(RecipeFetchingFailedState(err: 'recipe already added'));
+          }
         } else {
           return emit(
               RecipeFetchingFailedState(err: 'failed to fetch. Try again'));

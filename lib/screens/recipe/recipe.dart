@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_planning/blocs/user_type_bloc/bloc/user_type_bloc.dart';
-import 'package:meal_planning/hive_db/db_functions.dart';
-import 'package:meal_planning/main.dart';
 import 'package:meal_planning/models/hive_models/recipe_model.dart';
-import 'package:meal_planning/screens/auth/bloc/auth_bloc.dart';
 import 'package:meal_planning/screens/meal_plan.dart/functions/show_del_dialog.dart';
 import 'package:meal_planning/screens/premium/on_free_plan.dart';
 import 'package:meal_planning/screens/recipe/bloc/recipe_bloc.dart';
@@ -52,7 +49,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
               },
               child: BlocBuilder<UserTypeBloc, UserTypeState>(
                 builder: (context, state) {
-                  if (state is RecipeLoadingState) {
+                  if (state is UserTypeLoadingState) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
@@ -62,7 +59,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                   } else if (state is FreeUserState) {
                     return const OnFreePLanScreen();
                   } else if (state is RecipeLoadFailedState) {
-                    return const Text('no recipees');
+                    return const Text('No recipes');
                   }
                   return const Center(
                     child: Text(''),
@@ -116,7 +113,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
     SizeConfig sizeConfig,
   ) {
     if (state is RecipeLoadingState) {
-      return _buildLoadingCircleProgressInd(context);
+      return const Center(child: CircularProgressIndicator());
     } else if (state is RecipeLoadSuccessState) {
       allRecipes.clear();
       allRecipes.addAll(state.recipes);
@@ -127,15 +124,9 @@ class _RecipeScreenState extends State<RecipeScreen> {
       return _buildFetchingFailedWidget(state.err, context, sizeConfig);
     } else {
       return allRecipes.isEmpty
-          ? const Text('recipes are empty')
+          ? const Text('Recipes are empty')
           : _buildSuccessWidget(allRecipes, context, sizeConfig);
     }
-  }
-
-  Widget _buildLoadingCircleProgressInd(BuildContext context) {
-    return const Center(
-        child:
-            CircularProgressIndicator()); // Return the CircularProgressIndicator wrapped in Center
   }
 
   Widget _buildSuccessWidget(

@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meal_planning/consants/showcaseview_keys.dart';
 import 'package:meal_planning/models/hive_models/shoppinglist_item.dart';
-import 'package:meal_planning/models/showcase.dart';
-import 'package:meal_planning/repository/firestore.dart';
-import 'package:meal_planning/repository/recipe_repo.dart';
 import 'package:meal_planning/screens/generate_recipe.dart/generate_recipe.dart';
-import 'package:meal_planning/screens/main_screen/functinos/showcase.dart';
 import 'package:meal_planning/screens/main_screen/widgets/show_dialog.dart';
 import 'package:meal_planning/screens/meal_plan.dart/meal_plan.dart';
 import 'package:meal_planning/screens/recipe/bloc/recipe_bloc.dart';
@@ -14,12 +9,7 @@ import 'package:meal_planning/screens/recipe/recipe.dart';
 import 'package:meal_planning/screens/shopping_list/bloc/shopping_list_bloc.dart';
 import 'package:meal_planning/screens/shopping_list/shopping_list.dart';
 import 'package:meal_planning/utils/styles.dart';
-import 'package:meal_planning/utils/styles.dart';
-import 'package:meal_planning/widgets/Drawer.dart';
 import 'package:meal_planning/widgets/bottom_nav_bar.dart';
-import 'package:meal_planning/widgets/snackbar.dart';
-import 'package:showcaseview/showcaseview.dart';
-import 'package:showcaseview/showcaseview.dart';
 
 ValueNotifier<int> navBarInd = ValueNotifier(1);
 
@@ -171,55 +161,88 @@ class MainScreen extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),
           ),
+          backgroundColor: Colors.white, // Dialog background
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            child: SizedBox(
-              height: 200.0,
-              width: 300.0,
-              child: Form(
-                key: formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    TextFormField(
-                      controller: itemNameCtrl,
-                      decoration: const InputDecoration(
-                        hintText: 'Item name',
+            padding: const EdgeInsets.all(20.0),
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // Adapts to content size
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Text(
+                    'Add Shopping Item',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Colors.black87, // Title color
+                          fontWeight: FontWeight.bold,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: itemNameCtrl,
+                    decoration: InputDecoration(
+                      hintText: 'Item name',
+                      hintStyle: TextStyle(color: Colors.grey.shade600),
+                      filled: true,
+                      fillColor: Colors
+                          .grey.shade100, // Light background for input field
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        borderSide: BorderSide.none,
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Item name cannot be empty';
-                        }
-                        return null; // Return null if validation passes
-                      },
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 20.0),
                     ),
-                    const SizedBox(height: 10),
-                    TextField(
-                      controller: qtyCtrl,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        hintText: 'Qty',
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Item name cannot be empty';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    controller: qtyCtrl,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      hintText: 'Quantity',
+                      hintStyle: TextStyle(color: Colors.grey.shade600),
+                      filled: true,
+                      fillColor: Colors.grey.shade100,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        borderSide: BorderSide.none,
                       ),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 20.0),
                     ),
-                    const Spacer(),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          Navigator.pop(context);
-                          final item = ShopingListItem(
-                            name: itemNameCtrl.text.trim(),
-                            quantity: qtyCtrl.text.isEmpty ? '1' : qtyCtrl.text,
-                          );
-                          context.read<ShoppingListBloc>().add(
-                                ShoppingListAddEvent(item: item),
-                              );
-                        }
-                      },
-                      child: const Text('Add'),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        Navigator.pop(context);
+                        final item = ShopingListItem(
+                          name: itemNameCtrl.text.trim(),
+                          quantity: qtyCtrl.text.isEmpty ? '1' : qtyCtrl.text,
+                        );
+                        context.read<ShoppingListBloc>().add(
+                              ShoppingListAddEvent(item: item),
+                            );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.teal, // Button text color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 15.0),
                     ),
-                  ],
-                ),
+                    child: const Text('Add'),
+                  ),
+                ],
               ),
             ),
           ),

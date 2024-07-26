@@ -184,6 +184,17 @@ class HiveDb {
     return user.recipes;
   }
 
+  static Future<bool> checkIfRecipeExists(RecipeModel recipe) async {
+    userBox = await Hive.openBox<UserModel>(userUid);
+    UserModel user = userBox.get(userUid)!;
+    bool recExist = user.recipes.any((rec) => rec.title == recipe.title);
+
+    if (recExist) {
+      return true;
+    }
+    return false;
+  }
+
   static Future<List<RecipeModel>>? loadAllRecipes() async {
     userBox = await Hive.openBox(userUid);
     UserModel user = userBox.get(userUid)!;

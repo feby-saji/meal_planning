@@ -5,8 +5,11 @@ import 'package:meal_planning/main.dart';
 import 'package:meal_planning/utils/styles.dart';
 
 class KMainContainerWidget extends StatelessWidget {
-  KMainContainerWidget(
-      {super.key, required this.child, required this.sizeConfig, });
+  KMainContainerWidget({
+    super.key,
+    required this.child,
+    required this.sizeConfig,
+  });
 
   Widget child;
   SizeConfig sizeConfig;

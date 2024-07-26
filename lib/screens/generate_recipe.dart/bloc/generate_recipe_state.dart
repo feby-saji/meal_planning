@@ -1,6 +1,6 @@
 part of 'generate_recipe_bloc.dart';
 
-class RecipeState {
+class GenerateRecipeState {
   PromptModel prompt;
-  RecipeState({required this.prompt});
+  GenerateRecipeState({required this.prompt});
 }

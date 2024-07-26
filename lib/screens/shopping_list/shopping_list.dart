@@ -30,15 +30,13 @@ class ShoppingListScreen extends StatelessWidget {
             sizeConfig: sizeConfig,
             child: BlocConsumer<ShoppingListBloc, ShoppingListState>(
               listener: (context, state) {
-                if(state is NoInternetShoppingListState){
+                if (state is NoInternetShoppingListState) {
                   showErrorSnackbar(context, state.error);
                   context.read<ShoppingListBloc>().add(LoadShoppingListEvent());
                 }
               },
               builder: (context, state) {
-                var loadedItems = [];
                 if (state is ShoppingListItemsLoadedState) {
-                  Map<String, List<ShopingListItem>> loadedItems = state.categorizedItems;
                   return _buildShoppingItems(state.categorizedItems);
                 } else if (state is ShoppingListItemsFailedState) {
                   return _buildLoadFailedState(state);
@@ -56,7 +54,7 @@ class ShoppingListScreen extends StatelessWidget {
 
   Center _buildLoadFailedState(ShoppingListItemsFailedState state) {
     return Center(
-      child: Text(
+        child: Text(
       state.error,
       style: kMedText.copyWith(color: Colors.black),
     ));

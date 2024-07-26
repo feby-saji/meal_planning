@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meal_planning/blocs/user_type_bloc/bloc/user_type_bloc.dart';
-import 'package:meal_planning/consants/showcaseview_keys.dart';
-import 'package:meal_planning/functions/paywall_func.dart';
-import 'package:meal_planning/hive_db/db_functions.dart';
-import 'package:meal_planning/main.dart';
 import 'package:meal_planning/repository/firestore.dart';
 import 'package:meal_planning/screens/account/account.dart';
 import 'package:meal_planning/screens/family/family.dart';
@@ -12,7 +7,6 @@ import 'package:meal_planning/screens/meal_plan.dart/functions/show_del_dialog.d
 import 'package:meal_planning/screens/recipe/bloc/recipe_bloc.dart';
 import 'package:meal_planning/screens/shopping_list/bloc/shopping_list_bloc.dart';
 import 'package:meal_planning/utils/styles.dart';
-import 'package:showcaseview/showcaseview.dart';
 
 class KAppBarWidget extends StatelessWidget {
   const KAppBarWidget({
@@ -175,7 +169,10 @@ class KAppBarWidget extends StatelessWidget {
                   .add(GetShoppingListItemsFromFirestoreEvent());
             }
           },
-          child: const Icon(Icons.sync)),
+          child: Icon(
+            Icons.sync,
+            color: kClrPrimary,
+          )),
     );
   }
 }
