@@ -25,6 +25,7 @@ import 'package:meal_planning/screens/shopping_list/bloc/shopping_list_bloc.dart
 import 'package:meal_planning/screens/splash/splash.dart';
 import 'package:meal_planning/utils/styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 UserType userType = UserType.free;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -44,6 +45,7 @@ void main() async {
     ..registerAdapter(FamilyAdapter());
   // disabled revenuw cat
   // await revenuwCatConfig();
+  await dotenv.load(fileName: "env.env");
 
   runApp(const MyApp());
 }

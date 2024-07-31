@@ -9,6 +9,7 @@
 .history
 .svn/
 migrate_working_dir/
+lib/screens/generate_recipe.dart/functions/prompt.dart
 
 # IntelliJ related
 *.iml
@@ -36,6 +37,8 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+.env
+
 
 # Android Studio will place build artifacts here
 /android/app/debug
