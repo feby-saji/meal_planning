@@ -70,8 +70,7 @@ Future<List<Content>> _buildMultiPartContent(PromptModel prompt) async {
   // Read each user-selected image file and convert to Uint8List
   for (XFile imageFile in prompt.images) {
     Uint8List imageBytes = await imageFile.readAsBytes();
-    imageDataParts.add(
-        DataPart('image/jpeg', imageBytes)); 
+    imageDataParts.add(DataPart('image/jpeg', imageBytes));
   }
 
   return [
