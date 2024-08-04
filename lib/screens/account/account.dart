@@ -131,7 +131,7 @@ class AccountScreen extends StatelessWidget {
                     },
                   ),
                   const Spacer(),
-                  const Text('version 1.17.0'),
+                  const Text('version 1.18.0'),
                   const SizedBox(height: 50),
                 ],
               ),

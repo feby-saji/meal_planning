@@ -82,7 +82,9 @@ class GenerateRecipeBloc
                 )),
       );
     } else {
-      showErrorSnackbar(event.context, 'fetch failed! try again $result');
+      showErrorSnackbar(
+          context: event.context, message: 'fetch failed! try again $result');
+
       Navigator.of(event.context).pop();
     }
   }

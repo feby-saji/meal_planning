@@ -59,7 +59,8 @@ void handleDeepLink(Uri deepLink) async {
         prefs.getString(currentUserUId) != null &&
         prefs.getString(currentUserUId)!.isNotEmpty) {
       final familyId = queryParams['familyId'];
-      navigatorKey.currentState?.pushNamed('/joinFamily', arguments: familyId);
+      navigatorKey.currentState
+          ?.pushReplacementNamed('/joinFamily', arguments: familyId);
     } else {
       navigatorKey.currentState?.pushNamed('/login');
     }
@@ -121,7 +122,7 @@ class _MyAppState extends State<MyApp> {
           ),
           BlocProvider(
             lazy: true,
-            create: (context) => FamilyBloc(),
+            create: (context) => FamilyBloc(ShoppingListBloc()),
           ),
           BlocProvider(
             create: (context) => GenerateRecipeBloc(),
@@ -139,6 +140,7 @@ class _MyAppState extends State<MyApp> {
             routes: {
               '/joinFamily': (context) => const FamilyScreen(),
               '/login': (context) => AuthScreen(),
+              '/home': (context) => const SplashScreen(),
               // Add more routes as needed for other parts of your app
             },
             home: const SplashScreen()),

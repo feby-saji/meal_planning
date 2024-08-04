@@ -108,7 +108,7 @@ class HiveDb {
     } else {
       print('///Invalid or unrecognized deep link: $deepLink ///');
       Navigator.of(context)
-          .pushReplacementNamed('/home'); // Replace with your home screen route
+          .pushReplacementNamed('/home'); 
     }
   }
 

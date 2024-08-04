@@ -1,13 +1,9 @@
-import 'dart:ui';
-
 import 'package:bloc/bloc.dart';
 import 'package:meal_planning/functions/network_connection.dart';
 import 'package:meal_planning/hive_db/db_functions.dart';
 import 'package:meal_planning/models/hive_models/family.dart';
 import 'package:meal_planning/models/hive_models/shoppinglist_item.dart';
 import 'package:meal_planning/repository/firestore.dart';
-import 'package:meal_planning/screens/family/bloc/family_bloc.dart';
-import 'package:meal_planning/widgets/snackbar.dart';
 import 'package:meta/meta.dart';
 part 'shopping_list_event.dart';
 part 'shopping_list_state.dart';
@@ -22,6 +18,7 @@ class ShoppingListBloc extends Bloc<ShoppingListEvent, ShoppingListState> {
     on<ClearShoppingListItemsEvent>(_clearShoppingListItems);
     on<GetShoppingListItemsFromFirestoreEvent>(
         _getShoppingListItemsFromFirestoreEvent);
+    on<AddExistingItemsToFireStoreEvent>(_addExistingItemsToFireStoreEvent);
   }
 
   String emptyListTxt = 'Shopping list is empty.';
@@ -42,7 +39,6 @@ class ShoppingListBloc extends Bloc<ShoppingListEvent, ShoppingListState> {
           // add to firestore
           await _firestore.addItemToFireStore(event.item);
         }
-
         // add item to DB
         await HiveDb.addNewShoppingItem(event.item);
 
@@ -195,6 +191,16 @@ class ShoppingListBloc extends Bloc<ShoppingListEvent, ShoppingListState> {
       return add(LoadShoppingListEvent());
     } else {
       return emit(NoInternetShoppingListState(error: 'no internet connection'));
+    }
+  }
+
+  _addExistingItemsToFireStoreEvent(AddExistingItemsToFireStoreEvent event,
+      Emitter<ShoppingListState> emit) async {
+    List<ShopingListItem>? allItems = HiveDb.loadAllShoppingItem();
+    if (allItems != null) {
+      for (var item in allItems) {
+        await _firestore.addItemToFireStore(item);
+      }
     }
   }
 

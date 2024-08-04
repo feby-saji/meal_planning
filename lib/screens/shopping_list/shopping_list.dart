@@ -31,7 +31,7 @@ class ShoppingListScreen extends StatelessWidget {
             child: BlocConsumer<ShoppingListBloc, ShoppingListState>(
               listener: (context, state) {
                 if (state is NoInternetShoppingListState) {
-                  showErrorSnackbar(context, state.error);
+                  showErrorSnackbar(context: context, message: state.error);
                   context.read<ShoppingListBloc>().add(LoadShoppingListEvent());
                 }
               },

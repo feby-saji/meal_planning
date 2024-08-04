@@ -24,3 +24,5 @@ class ShoppingListItemRemoveEvent extends ShoppingListEvent {
 }
 
 class ClearShoppingListItemsEvent extends ShoppingListEvent {}
+
+class AddExistingItemsToFireStoreEvent extends ShoppingListEvent {}

@@ -6,19 +6,29 @@ import 'package:meal_planning/screens/family/bloc/family_bloc.dart';
 import 'package:meal_planning/screens/family/widgets/appbar.dart';
 import 'package:meal_planning/screens/family/widgets/family_member_tile.dart';
 import 'package:meal_planning/screens/family/widgets/join_fam.dart';
-import 'package:meal_planning/screens/main_screen/main_screen.dart';
 import 'package:meal_planning/utils/styles.dart';
 import 'package:meal_planning/widgets/error_snackbar.dart';
 import 'package:share_plus/share_plus.dart';
 
-class FamilyScreen extends StatelessWidget {
+class FamilyScreen extends StatefulWidget {
   const FamilyScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    // Trigger the event to check if the user is in a family
-    context.read<FamilyBloc>().add(CheckIfUserInFamilyEvent());
+  State<FamilyScreen> createState() => _FamilyScreenState();
+}
 
+class _FamilyScreenState extends State<FamilyScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // event to check if the user is in a family
+    context.read<FamilyBloc>().add(CheckIfUserInFamilyEvent());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _handleDeepLink();
+    });
+  }
+
+  _handleDeepLink() {
     final familyIdFromDeepLink =
         ModalRoute.of(context)?.settings.arguments as String?;
     if (familyIdFromDeepLink != null && familyIdFromDeepLink.isNotEmpty) {
@@ -26,32 +36,34 @@ class FamilyScreen extends StatelessWidget {
           .read<FamilyBloc>()
           .add(JoinFamilyEvent(familyId: familyIdFromDeepLink));
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Family'),
-      //   actions: [
-      //     IconButton(
-      //         onPressed: () => showExitFamilyDialog(context),
-      //         icon: const Icon(Icons.exit_to_app_outlined))
-      //   ],
-      //   backgroundColor: kClrPrimary,
-      // ),
       body: BlocListener<FamilyBloc, FamilyState>(
         listener: (context, state) {
           if (state is ErrorStateFamily) {
-            showErrorSnackbar(context, state.error);
+            showErrorSnackbar(
+                context: context,
+                message: state.error,
+                onTap: () {
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                  }
+                });
           }
         },
         child: BlocBuilder<FamilyBloc, FamilyState>(
           builder: (context, state) {
-            if (state is UserInFamily) {
+            if (state is LoadingStateFamily) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is UserInFamily) {
               return _buildUserInFamily(state.family, context);
             } else if (state is UserNotInFamily) {
               return _buildUserNotInFamily(context);
-            } else if (state is ErrorStateFamily) {
-              return Center(child: Text(state.error, style: kMedText));
             }
+            // TODO check if ErrorStateFamily necessary here
             return Column(
               children: [
                 AppBarContainer(alreadyInFamily: false),

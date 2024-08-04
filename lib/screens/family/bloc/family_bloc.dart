@@ -4,13 +4,16 @@ import 'package:meal_planning/hive_db/db_functions.dart';
 import 'package:meal_planning/main.dart';
 import 'package:meal_planning/models/hive_models/family.dart';
 import 'package:meal_planning/repository/firestore.dart';
+import 'package:meal_planning/screens/shopping_list/bloc/shopping_list_bloc.dart';
 import 'package:meta/meta.dart';
 part 'family_event.dart';
 part 'family_state.dart';
 
 class FamilyBloc extends Bloc<FamilyEvent, FamilyState> {
   final FireStoreFunctions _firestore = FireStoreFunctions();
-  FamilyBloc() : super(LoadingStateFamily()) {
+  late ShoppingListBloc _shoppingListBloc;
+  FamilyBloc(ShoppingListBloc shoppingListBloc) : super(LoadingStateFamily()) {
+    _shoppingListBloc = shoppingListBloc;
     on<CheckIfUserInFamilyEvent>(_checkIfUserInFamily);
     on<CreateFamilyEvent>(_createFamilyEvent);
     on<JoinFamilyEvent>(_joinFamilyEvent);
@@ -56,11 +59,16 @@ class FamilyBloc extends Bloc<FamilyEvent, FamilyState> {
       emit(LoadingStateFamily());
       if (await _firestore.familyExist(event.familyId)) {
         var result = await _firestore.joinFamily(event.familyId);
-        // checks if user already in family
+        // false if user already in family
         if (result == false) {
-          print('///_joinFamilyEvent Already in Family');
-          return emit(ErrorStateFamily(error: 'Already in Family'));
+          emit(ErrorStateFamily(error: 'Already in Family'));
+
+          // pass the family obj
+          Family family = await _firestore.fetchFamilyDetails();
+          return emit(UserInFamily(family: family));
         } else {
+          // if joined in the family add current shopping list items to family list
+          _shoppingListBloc.add(AddExistingItemsToFireStoreEvent());
           return add(CheckIfUserInFamilyEvent());
         }
       } else {

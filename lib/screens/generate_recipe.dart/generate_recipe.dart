@@ -28,7 +28,7 @@ class CreateRecipeScreen extends StatelessWidget {
       body: BlocListener<RecipeBloc, RecipeState>(
         listener: (context, state) {
           if (state is RecipeFetchingFailedState) {
-            showErrorSnackbar(context, state.err);
+                  showErrorSnackbar(context: context, message: state.err);
           }
         },
         child: SingleChildScrollView(

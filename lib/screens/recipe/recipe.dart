@@ -44,7 +44,8 @@ class _RecipeScreenState extends State<RecipeScreen> {
             child: BlocListener<RecipeBloc, RecipeState>(
               listener: (context, state) {
                 if (state is NoInternetRecipeState) {
-                  showErrorSnackbar(context, '${state.err} try again!');
+                  showErrorSnackbar(
+                      context: context, message: '${state.err} try again!');
                 }
               },
               child: BlocBuilder<UserTypeBloc, UserTypeState>(
@@ -81,7 +82,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
         BlocConsumer<RecipeBloc, RecipeState>(
           listener: (context, state) {
             if (state is RecipeFetchingFailedState) {
-              showErrorSnackbar(context, state.err);
+              showErrorSnackbar(context: context, message: state.err);
             }
           },
           builder: (context, state) {

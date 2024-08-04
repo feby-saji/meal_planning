@@ -15,6 +15,6 @@ void openGmailWithSubject(BuildContext context) async {
   try {
     await launchUrl(emailLaunchUri);
   } catch (e) {
-    showErrorSnackbar(context, 'unable to launch gmail');
+    showErrorSnackbar(context: context, message: 'unable to launch gmail');
   }
 }
