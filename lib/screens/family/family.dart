@@ -142,35 +142,44 @@ class _FamilyScreenState extends State<FamilyScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AppBarContainer(alreadyInFamily: true),
-        const SizedBox(height: 20),
+        const SizedBox(height: 35),
         GestureDetector(
           onTap: () {
             // invite users to the fanmily
             shareFamilyID(family.familyId, context);
           },
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Row(children: [
-                  const Icon(
-                    Icons.share,
-                    size: 25,
-                  ),
-                  Text(
-                    ' ID: ',
-                    style: kMedText.copyWith(fontSize: 18, color: kClrTextDark),
-                  )
-                ]),
-              ),
-              Text(
-                family.familyId,
-                style: kMedText.copyWith(fontSize: 20, color: kClrTextDark),
-              ),
-            ],
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 5),
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Row(children: [
+                    const Icon(
+                      Icons.share,
+                      size: 25,
+                    ),
+                    Text(
+                      ' ID: ',
+                      style:
+                          kMedText.copyWith(fontSize: 18, color: kClrTextDark),
+                    )
+                  ]),
+                ),
+                Text(
+                  family.familyId,
+                  style: kMedText.copyWith(fontSize: 20, color: kClrTextDark),
+                ),
+              ],
+            ),
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 50),
         Padding(
           padding: const EdgeInsets.only(left: 10),
           child: Text(
@@ -178,7 +187,6 @@ class _FamilyScreenState extends State<FamilyScreen> {
             style: kMedText.copyWith(fontSize: 18, color: kClrTextDark),
           ),
         ),
-        const SizedBox(height: 6),
         Expanded(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),

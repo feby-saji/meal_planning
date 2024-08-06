@@ -28,7 +28,7 @@ class CreateRecipeScreen extends StatelessWidget {
       body: BlocListener<RecipeBloc, RecipeState>(
         listener: (context, state) {
           if (state is RecipeFetchingFailedState) {
-                  showErrorSnackbar(context: context, message: state.err);
+            showErrorSnackbar(context: context, message: state.err);
           }
         },
         child: SingleChildScrollView(
@@ -37,7 +37,7 @@ class CreateRecipeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              const Text('Image of the ingredients:'),
+              const Text('Image of the ingredients you have:'),
               const SizedBox(height: 8),
               _buildImageAddingSection(context),
               const SizedBox(height: 16),
