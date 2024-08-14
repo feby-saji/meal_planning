@@ -95,18 +95,6 @@ class AccountScreen extends StatelessWidget {
                     },
                   ),
                   OptionTileWidget(
-                    iconPath: 'assets/icons/app_icons/terms_conditions.png',
-                    title: 'Terms & Conditions',
-                    onTap: () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const TermsAndConditionsScreen()),
-                      );
-                    },
-                  ),
-                  OptionTileWidget(
                     iconPath: 'assets/icons/app_icons/about_us.png',
                     title: 'About us',
                     onTap: () async {
@@ -131,7 +119,7 @@ class AccountScreen extends StatelessWidget {
                     },
                   ),
                   const Spacer(),
-                  const Text('version 1.18.0'),
+                  const Text('version 1.20.0'),
                   const SizedBox(height: 50),
                 ],
               ),
