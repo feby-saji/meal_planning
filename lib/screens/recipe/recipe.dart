@@ -44,8 +44,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
             child: BlocListener<RecipeBloc, RecipeState>(
               listener: (context, state) {
                 if (state is NoInternetRecipeState) {
-                  showErrorSnackbar(
-                      context: context, message: '${state.err} try again!');
+                  showErrorSnackbar(context: context, message: '${state.err} try again!');
                 }
               },
               child: BlocBuilder<UserTypeBloc, UserTypeState>(
@@ -124,10 +123,13 @@ class _RecipeScreenState extends State<RecipeScreen> {
     } else if (state is RecipeFetchingFailedState) {
       return _buildFetchingFailedWidget(state.err, context, sizeConfig);
     } else {
-      return allRecipes.isEmpty
-          ? const Text('Recipes are empty')
-          : _buildSuccessWidget(allRecipes, context, sizeConfig);
+      return const Text('Recipes are empty');
     }
+    // else {
+    //   return allRecipes.isEmpty
+    //       ? const Text('Recipes are empty')
+    //       : _buildSuccessWidget(allRecipes, context, sizeConfig);
+    // }
   }
 
   Widget _buildSuccessWidget(
@@ -151,8 +153,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
               imgPath: recipe.img,
               sizeConfig: sizeConfig,
               onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                    builder: (context) => DetailedRecipeScreen(recipe: recipe)),
+                MaterialPageRoute(builder: (context) => DetailedRecipeScreen(recipe: recipe)),
               ),
               updateFav: () {
                 context.read<RecipeBloc>().add(UpdateFavouriteEvent(
@@ -162,12 +163,9 @@ class _RecipeScreenState extends State<RecipeScreen> {
               },
               onLongPress: () => showDeleteConfirmation(
                   context: context,
-                  contetText:
-                      'Are you sure you want to delete "${recipe.title}"?',
+                  contetText: 'Are you sure you want to delete "${recipe.title}"?',
                   onPressed: () => [
-                        context
-                            .read<RecipeBloc>()
-                            .add(DeleteRecipeEvent(recipe: recipe)),
+                        context.read<RecipeBloc>().add(DeleteRecipeEvent(recipe: recipe)),
                         Navigator.pop(context),
                       ]),
             );
