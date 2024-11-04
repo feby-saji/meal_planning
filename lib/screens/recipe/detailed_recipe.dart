@@ -33,7 +33,6 @@ class DetailedRecipeScreen extends StatelessWidget {
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               SliverAppBar(
-                backgroundColor: const Color.fromARGB(255, 178, 254, 180),
                 pinned: true,
                 expandedHeight: 300,
                 leading: _buildGobackBtn(context),
@@ -41,21 +40,26 @@ class DetailedRecipeScreen extends StatelessWidget {
                   tag: 'Recipe_Hero',
                   child: Text(
                     recipe.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: kMedText.copyWith(fontSize: 18),
                   ),
                 ),
                 actions: [_buildSaveIcon(context)],
-                flexibleSpace: FlexibleSpaceBar(
-                  background: ClipRRect(
-                    borderRadius: BorderRadius.circular(30),
-                    child: recipe.img.isNotEmpty
-                        ? Image.file(
-                            File(recipe.img),
-                            fit: BoxFit.cover,
-                          )
-                        : Image.asset(
-                            'assets/images/chef_rat.png',
-                          ),
+                flexibleSpace: Padding(
+                  padding: const EdgeInsets.only(top: 90),
+                  child: FlexibleSpaceBar(
+                    background: ClipRRect(
+                      borderRadius: BorderRadius.circular(30),
+                      child: recipe.img.isNotEmpty
+                          ? Image.file(
+                              File(recipe.img),
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              'assets/images/chef_rat.png',
+                            ),
+                    ),
                   ),
                 ),
                 bottom: PreferredSize(
