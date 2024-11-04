@@ -1,4 +1,4 @@
-package com.gloabalsoftlabs.meal_planning
+package com.globalsoftlabs.mealplanweekly
 
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.FlutterFragmentActivity

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,7 +5,6 @@ import 'package:meal_planning/models/hive_models/recipe_model.dart';
 import 'package:meal_planning/models/prompt.dart';
 import 'package:meal_planning/screens/generate_recipe.dart/functions/prompt_function.dart';
 import 'package:meal_planning/screens/recipe/detailed_recipe.dart';
-import 'package:meal_planning/screens/recipe/recipe.dart';
 import 'package:meal_planning/widgets/error_snackbar.dart';
 import 'package:meta/meta.dart';
 

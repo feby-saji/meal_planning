@@ -14,6 +14,58 @@
       },
       "oauth_client": [
         {
+          "client_id": "420464524498-h955i0dtiq0ukorl41k5gpav06k1u6it.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gloabalsoftlabs.meal_planning",
+            "certificate_hash": "e8675b02e23e8840019fd698eb809321ba5e8b01"
+          }
+        },
+        {
+          "client_id": "420464524498-kvuqa79q1batl8108u8ogs13fmjbg014.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gloabalsoftlabs.meal_planning",
+            "certificate_hash": "303203d347f86701ec7a42057f148c2a47795321"
+          }
+        },
+        {
+          "client_id": "420464524498-emnp0okf1gth8djhkbojr2t5ksbiot2u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOoTBdaVDys50Cj6blgV-WtebGfd548wk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "420464524498-emnp0okf1gth8djhkbojr2t5ksbiot2u.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "420464524498-9r24tm2ku28degttnvclkmqljk2ui0to.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mealPlanning"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:420464524498:android:ed4340df2309862a46810b",
+        "android_client_info": {
+          "package_name": "com.globalsoftlabs.mealplanweekly"
+        }
+      },
+      "oauth_client": [
+        {
           "client_id": "420464524498-emnp0okf1gth8djhkbojr2t5ksbiot2u.apps.googleusercontent.com",
           "client_type": 3
         }

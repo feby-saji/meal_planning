@@ -28,7 +28,9 @@ class FamilyBloc extends Bloc<FamilyEvent, FamilyState> {
 
       if (inFamily.isNotEmpty) {
         Family? family;
-        if (await connectedToInternet() && userType == UserType.premium) {
+        if (await connectedToInternet()
+        //  && userType == UserType.premium
+         ) {
           // get family info from firestore to hive
           family = await _firestore.fetchFamilyDetails();
         } else {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meal_planning/blocs/user_type_bloc/bloc/user_type_bloc.dart';
+import 'package:meal_planning/blocs/bloc/user_type_bloc.dart';
 import 'package:meal_planning/models/hive_models/recipe_model.dart';
 import 'package:meal_planning/screens/meal_plan.dart/functions/show_del_dialog.dart';
 import 'package:meal_planning/screens/premium/on_free_plan.dart';

@@ -34,7 +34,7 @@ enum UserType {
 
 class HiveDb {
   static createUser(User user) async {
-    userType = UserType.free;
+    // userType = UserType.free;
     userUid = user.uid;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     userBox = await Hive.openBox<UserModel>(user.uid);
@@ -88,7 +88,6 @@ class HiveDb {
           );
         }
       } else {
-        print('//getLoggedInUser userType is $userType');
         navigator.pushReplacement(
           MaterialPageRoute(builder: (context) => AuthScreen()),
         );
