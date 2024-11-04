@@ -4,7 +4,7 @@ part of 'generate_recipe_bloc.dart';
 sealed class GenerateRecipeEvent {}
 
 class UpdateImageEvent extends GenerateRecipeEvent {
-  XFile img;
+  final  XFile img;
   UpdateImageEvent({required this.img});
 }
 

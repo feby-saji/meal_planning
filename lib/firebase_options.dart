@@ -54,9 +54,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCOoTBdaVDys50Cj6blgV-WtebGfd548wk',
-    appId: '1:420464524498:android:2ffbefdf10c8ee0a46810b',
+    appId: '1:420464524498:android:ed4340df2309862a46810b',
     messagingSenderId: '420464524498',
     projectId: 'meal-planning-fe26a',
     storageBucket: 'meal-planning-fe26a.appspot.com',
   );
+
 }

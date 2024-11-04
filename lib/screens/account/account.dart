@@ -1,22 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meal_planning/blocs/user_type_bloc/bloc/user_type_bloc.dart';
-import 'package:meal_planning/consants/showcaseview_keys.dart';
-import 'package:meal_planning/functions/paywall_func.dart';
 import 'package:meal_planning/hive_db/db_functions.dart';
-import 'package:meal_planning/main.dart';
 import 'package:meal_planning/screens/account/functions/gmail.dart';
 import 'package:meal_planning/screens/account/functions/url_launcher.dart';
 import 'package:meal_planning/screens/account/pages/about%20_us.dart';
-import 'package:meal_planning/screens/account/pages/terms_conditions.dart';
 import 'package:meal_planning/screens/account/widget/option_tile.dart';
 import 'package:meal_planning/screens/family/family.dart';
-import 'package:meal_planning/screens/premium/on_premium_plan.dart';
 import 'package:meal_planning/utils/styles.dart';
 import 'package:meal_planning/widgets/main_appbar.dart';
 import 'package:meal_planning/widgets/main_container.dart';
-import 'package:showcaseview/showcaseview.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -119,7 +111,7 @@ class AccountScreen extends StatelessWidget {
                     },
                   ),
                   const Spacer(),
-                  const Text('version 1.20.0'),
+                  const Text('version 1.1.0'),
                   const SizedBox(height: 50),
                 ],
               ),

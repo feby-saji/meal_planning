@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meal_planning/blocs/user_type_bloc/bloc/user_type_bloc.dart';
+// import 'package:meal_planning/blocs/user_type_bloc/bloc/user_type_bloc.dart';
 import 'package:meal_planning/functions/checkUserType.dart';
 import 'package:meal_planning/hive_db/db_functions.dart';
 import 'package:meal_planning/main.dart';
@@ -39,7 +39,7 @@ class OnFreePLanScreen extends StatelessWidget {
             onPressed: () async {
               // await RevenueCatUI.presentPaywallIfNeeded("premium");
             
-              context.read<UserTypeBloc>().add(CheckUserType());
+              // context.read<UserTypeBloc>().add(CheckUserType());
             },
             child: Text(
               "go to plans".toUpperCase(),
