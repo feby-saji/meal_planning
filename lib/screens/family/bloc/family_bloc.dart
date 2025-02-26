@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:meal_planning/db_functions/hive_func.dart';
 import 'package:meal_planning/functions/network_connection.dart';
-import 'package:meal_planning/hive_db/db_functions.dart';
 import 'package:meal_planning/main.dart';
 import 'package:meal_planning/models/hive_models/family.dart';
 import 'package:meal_planning/repository/firestore.dart';
@@ -20,8 +20,7 @@ class FamilyBloc extends Bloc<FamilyEvent, FamilyState> {
     on<ExitFamilyEvent>(_exitFamilyEvent);
   }
 
-  _checkIfUserInFamily(
-      CheckIfUserInFamilyEvent event, Emitter<FamilyState> emit) async {
+  _checkIfUserInFamily(CheckIfUserInFamilyEvent event, Emitter<FamilyState> emit) async {
     if (await connectedToInternet()) {
       emit(LoadingStateFamily());
       final inFamily = await _firestore.checkIfUserInFam();
@@ -29,8 +28,8 @@ class FamilyBloc extends Bloc<FamilyEvent, FamilyState> {
       if (inFamily.isNotEmpty) {
         Family? family;
         if (await connectedToInternet()
-        //  && userType == UserType.premium
-         ) {
+            //  && userType == UserType.premium
+            ) {
           // get family info from firestore to hive
           family = await _firestore.fetchFamilyDetails();
         } else {

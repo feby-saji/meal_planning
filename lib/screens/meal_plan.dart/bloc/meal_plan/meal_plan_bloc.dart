@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:meal_planning/hive_db/db_functions.dart';
+import 'package:meal_planning/db_functions/hive_func.dart';
 import 'package:meal_planning/models/hive_models/meal_plan_model.dart';
 import 'package:meal_planning/models/hive_models/recipe_model.dart';
 import 'package:meta/meta.dart';
@@ -29,7 +29,7 @@ class MealPlanBloc extends Bloc<MealPlanEvent, MealPlanState> {
     GetAllMealToPlanEvent event,
     Emitter<MealPlanState> emit,
   ) async {
-    List<MealPlanModel>? demoList = await HiveDb.getAllMealPlans();
+    List<MealPlanModel>? demoList = HiveDb.getAllMealPlans();
 
     if (demoList != null) {
       _cachedMealPlans = demoList;
@@ -41,8 +41,7 @@ class MealPlanBloc extends Bloc<MealPlanEvent, MealPlanState> {
     }
   }
 
-  _deleteMealPlanEvent(
-      DeleteMealPlanEvent event, Emitter<MealPlanState> emit) async {
+  _deleteMealPlanEvent(DeleteMealPlanEvent event, Emitter<MealPlanState> emit) async {
     await HiveDb.deleteMealplans(event.mealPlan);
     _cachedMealPlans.removeWhere((recipe) => recipe == event.mealPlan);
 

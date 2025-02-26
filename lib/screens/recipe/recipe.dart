@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meal_planning/blocs/bloc/user_type_bloc.dart';
@@ -23,6 +24,14 @@ class RecipeScreen extends StatefulWidget {
 }
 
 class _RecipeScreenState extends State<RecipeScreen> {
+  Timer? _debounce;
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final SizeConfig sizeConfig = SizeConfig();
@@ -95,7 +104,9 @@ class _RecipeScreenState extends State<RecipeScreen> {
   Widget _buildSearchTextField(BuildContext context) {
     return TextField(
       onChanged: (val) {
-        context.read<RecipeBloc>().add(SearchRecipesEvent(val: val));
+        // TODO: test if working
+        onSearchChanged(context, val);
+        // context.read<RecipeBloc>().add(SearchRecipesEvent(val: val));
       },
       decoration: InputDecoration(
         hintText: 'Search recipes...',
@@ -153,7 +164,15 @@ class _RecipeScreenState extends State<RecipeScreen> {
               imgPath: recipe.img,
               sizeConfig: sizeConfig,
               onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => DetailedRecipeScreen(recipe: recipe)),
+                // TODO test if working properly
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      DetailedRecipeScreen(recipe: recipe),
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(opacity: animation, child: child);
+                  },
+                ),
+                // MaterialPageRoute(builder: (context) => DetailedRecipeScreen(recipe: recipe)),
               ),
               updateFav: () {
                 context.read<RecipeBloc>().add(UpdateFavouriteEvent(
@@ -191,5 +210,13 @@ class _RecipeScreenState extends State<RecipeScreen> {
     return allRecipes.isEmpty
         ? Expanded(child: Center(child: Text(err)))
         : _buildSuccessWidget(allRecipes, context, sizeConfig);
+  }
+
+  void onSearchChanged(BuildContext context, String query) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+
+    _debounce = Timer(const Duration(milliseconds: 300), () {
+      context.read<RecipeBloc>().add(SearchRecipesEvent(val: query));
+    });
   }
 }

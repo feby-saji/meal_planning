@@ -2,17 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:meal_planning/hive_db/db_functions.dart';
+import 'package:meal_planning/db_functions/hive_func.dart';
 import 'package:meal_planning/models/hive_models/family.dart';
 import 'package:meal_planning/models/hive_models/shoppinglist_item.dart';
 import 'package:meal_planning/screens/shopping_list/bloc/shopping_list_bloc.dart';
 
 class FireStoreFunctions {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference familyCollection =
-      FirebaseFirestore.instance.collection('family');
-  CollectionReference usersCollection =
-      FirebaseFirestore.instance.collection('users');
+  CollectionReference familyCollection = FirebaseFirestore.instance.collection('family');
+  CollectionReference usersCollection = FirebaseFirestore.instance.collection('users');
   CollectionReference shopppingListCollection =
       FirebaseFirestore.instance.collection('shopping_list');
   final db = FirebaseFirestore.instance;
@@ -64,8 +62,7 @@ class FireStoreFunctions {
       // update in user doc
       await usersCollection.doc(userUid).update({'familyId': docRef.id});
       // update in hive
-      Family familyModel =
-          Family(familyId: docRef.id, creator: uid, members: [userUid]);
+      Family familyModel = Family(familyId: docRef.id, creator: uid, members: [userUid]);
       await HiveDb.updateFamily(familyModel);
     } catch (e) {
       print(e);
@@ -100,10 +97,8 @@ class FireStoreFunctions {
     final data = docSnap.data() as Map;
 
     // save fam details in hive
-    Family family = Family(
-        familyId: data['familyId'],
-        creator: data['creator'],
-        members: data['members']);
+    Family family =
+        Family(familyId: data['familyId'], creator: data['creator'], members: data['members']);
     await HiveDb.updateFamily(family);
     print('//joining  current members are $data[members]');
   }
@@ -114,8 +109,7 @@ class FireStoreFunctions {
       DocumentSnapshot docSnapshot = await usersCollection.doc(userUid).get();
       String familyId = docSnapshot.get('familyId');
       // get familt details
-      DocumentSnapshot fdocSnapshot =
-          await familyCollection.doc(familyId).get();
+      DocumentSnapshot fdocSnapshot = await familyCollection.doc(familyId).get();
       Family family = Family(
         familyId: fdocSnapshot.get('familyId'),
         creator: fdocSnapshot.get('creator'),
@@ -167,10 +161,8 @@ class FireStoreFunctions {
       DocumentSnapshot docSnapshot = await usersCollection.doc(userUid).get();
       String familyId = docSnapshot.get('familyId');
 
-      DocumentReference docRef = familyCollection
-          .doc(familyId)
-          .collection('shopping_list')
-          .doc('shopping list');
+      DocumentReference docRef =
+          familyCollection.doc(familyId).collection('shopping_list').doc('shopping list');
 
       await firestore.runTransaction((transaction) async {
         DocumentSnapshot snapshot = await transaction.get(docRef);
@@ -190,8 +182,7 @@ class FireStoreFunctions {
           bool itemUpdated = false;
 
           for (int i = 0; i < items.length; i++) {
-            int newQty =
-                int.parse(items[i]['quantity']) + int.parse(item['quantity']);
+            int newQty = int.parse(items[i]['quantity']) + int.parse(item['quantity']);
             if (items[i]['name'] == item['name']) {
               items[i]['quantity'] = newQty.toString();
               items[i]['category'] = item['category'];
@@ -219,11 +210,7 @@ class FireStoreFunctions {
 
       Map<String, dynamic> item = listItem.toMap();
 
-      await familyCollection
-          .doc(familyId)
-          .collection('shopping_list')
-          .doc('shopping list')
-          .update({
+      await familyCollection.doc(familyId).collection('shopping_list').doc('shopping list').update({
         'items': FieldValue.arrayRemove([item])
       });
     } catch (e) {
@@ -233,14 +220,11 @@ class FireStoreFunctions {
 
   Future clearFirestoreItems() async {
     try {
-      DocumentSnapshot famDocSnapshot =
-          await usersCollection.doc(userUid).get();
+      DocumentSnapshot famDocSnapshot = await usersCollection.doc(userUid).get();
       String familyId = famDocSnapshot.get('familyId');
       // Reference to the Firestore document
-      DocumentReference docRef = familyCollection
-          .doc(familyId)
-          .collection('shopping_list')
-          .doc('shopping list');
+      DocumentReference docRef =
+          familyCollection.doc(familyId).collection('shopping_list').doc('shopping list');
 
       DocumentSnapshot docSnapshot = await docRef.get();
 
@@ -257,14 +241,11 @@ class FireStoreFunctions {
 
   Future<List<ShopingListItem>> fetchAllItems() async {
     try {
-      DocumentSnapshot famDocSnapshot =
-          await usersCollection.doc(userUid).get();
+      DocumentSnapshot famDocSnapshot = await usersCollection.doc(userUid).get();
       String familyId = famDocSnapshot.get('familyId');
 
-      DocumentReference docRef = familyCollection
-          .doc(familyId)
-          .collection('shopping_list')
-          .doc('shopping list');
+      DocumentReference docRef =
+          familyCollection.doc(familyId).collection('shopping_list').doc('shopping list');
 
       DocumentSnapshot docSnapshot = await docRef.get();
 
@@ -272,9 +253,8 @@ class FireStoreFunctions {
         // Get the items array from the document
         List<dynamic> itemsDynamic = docSnapshot.get('items');
 
-        List<Map<String, dynamic>> items = itemsDynamic
-            .map((item) => Map<String, dynamic>.from(item))
-            .toList();
+        List<Map<String, dynamic>> items =
+            itemsDynamic.map((item) => Map<String, dynamic>.from(item)).toList();
         List<ShopingListItem> itemsList = [];
 
         for (var item in items) {

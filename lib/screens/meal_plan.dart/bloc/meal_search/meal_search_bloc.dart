@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:meal_planning/hive_db/db_functions.dart';
+import 'package:meal_planning/db_functions/hive_func.dart';
 import 'package:meal_planning/models/hive_models/recipe_model.dart';
 import 'package:meta/meta.dart';
 part 'meal_search_event.dart';
@@ -15,9 +15,9 @@ class MealPlanSearchBloc extends Bloc<MealPlanSearchEvent, MealPlanSearchState> 
   ) async {
     if (event.val.isEmpty) {
       List<RecipeModel>? recipes = await HiveDb.loadAllRecipes();
-      if (recipes!= null && recipes.isNotEmpty) {
+      if (recipes != null && recipes.isNotEmpty) {
         emit(MealPlanSearchResultsState(recipes: recipes));
-      }else{
+      } else {
         emit(MealPlanSearchFailureState(err: 'no recipe found'));
       }
     } else {
@@ -30,4 +30,3 @@ class MealPlanSearchBloc extends Bloc<MealPlanSearchEvent, MealPlanSearchState> 
     }
   }
 }
-

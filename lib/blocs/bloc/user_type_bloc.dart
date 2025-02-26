@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meal_planning/functions/checkUserType.dart';
-import 'package:meal_planning/hive_db/db_functions.dart';
+import 'package:meal_planning/db_functions/hive_func.dart';
 import 'package:meal_planning/main.dart';
 import 'package:meta/meta.dart';
 part 'user_type_event.dart';

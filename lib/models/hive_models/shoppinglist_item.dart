@@ -1,8 +1,9 @@
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/adapters.dart';
+
 part 'shoppinglist_item.g.dart';
 
 @HiveType(typeId: 3)
-class ShopingListItem {
+class ShopingListItem extends HiveObject {
   @HiveField(0)
   final String name;
   @HiveField(1)
@@ -19,7 +20,7 @@ class ShopingListItem {
     this.category = 'others',
   });
 
-   Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap() {
     return {
       'name': name,
       'quantity': quantity,

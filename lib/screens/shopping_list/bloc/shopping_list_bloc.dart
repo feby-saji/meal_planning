@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:meal_planning/db_functions/hive_func.dart';
 import 'package:meal_planning/functions/network_connection.dart';
-import 'package:meal_planning/hive_db/db_functions.dart';
 import 'package:meal_planning/models/hive_models/family.dart';
 import 'package:meal_planning/models/hive_models/shoppinglist_item.dart';
 import 'package:meal_planning/repository/firestore.dart';
@@ -16,8 +16,7 @@ class ShoppingListBloc extends Bloc<ShoppingListEvent, ShoppingListState> {
     on<LoadShoppingListEvent>(_loadShoppingListEvent);
     on<ShoppingListItemRemoveEvent>(_shoppingListItemRemove);
     on<ClearShoppingListItemsEvent>(_clearShoppingListItems);
-    on<GetShoppingListItemsFromFirestoreEvent>(
-        _getShoppingListItemsFromFirestoreEvent);
+    on<GetShoppingListItemsFromFirestoreEvent>(_getShoppingListItemsFromFirestoreEvent);
     on<AddExistingItemsToFireStoreEvent>(_addExistingItemsToFireStoreEvent);
   }
 
@@ -52,8 +51,7 @@ class ShoppingListBloc extends Bloc<ShoppingListEvent, ShoppingListState> {
         // Check if item already exists
         if (existingInd != -1) {
           _cachedcategorizedList[event.item.category]![existingInd].quantity =
-              _cachedcategorizedList[event.item.category]![existingInd]
-                  .quantity;
+              _cachedcategorizedList[event.item.category]![existingInd].quantity;
         } else {
           // Item doesn't exist, add it to the list
           _cachedcategorizedList[event.item.category]?.add(event.item);
@@ -85,8 +83,7 @@ class ShoppingListBloc extends Bloc<ShoppingListEvent, ShoppingListState> {
         _cachedcategorizedList[item.category]?.add(item);
       }
 
-      emit(ShoppingListItemsLoadedState(
-          categorizedItems: _cachedcategorizedList));
+      emit(ShoppingListItemsLoadedState(categorizedItems: _cachedcategorizedList));
     } else {
       emit(ShoppingListItemsFailedState(error: emptyListTxt));
     }
@@ -109,8 +106,7 @@ class ShoppingListBloc extends Bloc<ShoppingListEvent, ShoppingListState> {
         HiveDb.removeShoppingListItem(event.item);
 
         // remove in cached list
-        int? ind =
-            _cachedcategorizedList[event.item.category]?.indexOf(event.item);
+        int? ind = _cachedcategorizedList[event.item.category]?.indexOf(event.item);
         if (ind != null) {
           _cachedcategorizedList[event.item.category]!.removeAt(ind);
         }
@@ -120,16 +116,14 @@ class ShoppingListBloc extends Bloc<ShoppingListEvent, ShoppingListState> {
         }
         if (_cachedcategorizedList.isNotEmpty) {
           return emit(
-            ShoppingListItemsLoadedState(
-                categorizedItems: _cachedcategorizedList),
+            ShoppingListItemsLoadedState(categorizedItems: _cachedcategorizedList),
           );
         } else {
           return emit(ShoppingListItemsFailedState(error: emptyListTxt));
         }
       } catch (e) {
         print('/// deletion failed');
-        return emit(
-            ShoppingListItemsFailedState(error: 'soemrthing went wrong'));
+        return emit(ShoppingListItemsFailedState(error: 'soemrthing went wrong'));
       }
     } else {
       return emit(NoInternetShoppingListState(error: 'no internet connection'));
@@ -156,8 +150,7 @@ class ShoppingListBloc extends Bloc<ShoppingListEvent, ShoppingListState> {
 
       if (_cachedcategorizedList.isNotEmpty) {
         emit(
-          ShoppingListItemsLoadedState(
-              categorizedItems: _cachedcategorizedList),
+          ShoppingListItemsLoadedState(categorizedItems: _cachedcategorizedList),
         );
       } else {
         emit(ShoppingListItemsFailedState(error: emptyListTxt));
@@ -194,8 +187,8 @@ class ShoppingListBloc extends Bloc<ShoppingListEvent, ShoppingListState> {
     }
   }
 
-  _addExistingItemsToFireStoreEvent(AddExistingItemsToFireStoreEvent event,
-      Emitter<ShoppingListState> emit) async {
+  _addExistingItemsToFireStoreEvent(
+      AddExistingItemsToFireStoreEvent event, Emitter<ShoppingListState> emit) async {
     List<ShopingListItem>? allItems = HiveDb.loadAllShoppingItem();
     if (allItems != null) {
       for (var item in allItems) {

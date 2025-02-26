@@ -2,10 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:meal_planning/blocs/bloc/user_type_bloc.dart';
+import 'package:meal_planning/db_functions/db_version_manager.dart';
 import 'package:meal_planning/firebase_options.dart';
-import 'package:meal_planning/hive_db/db_functions.dart';
+import 'package:meal_planning/db_functions/hive_func.dart';
 import 'package:meal_planning/models/hive_models/family.dart';
 import 'package:meal_planning/models/hive_models/meal_plan_model.dart';
 import 'package:meal_planning/models/hive_models/recipe_model.dart';
@@ -31,7 +33,9 @@ UserType userType = UserType.free;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -43,11 +47,27 @@ void main() async {
     ..registerAdapter(ShopingListItemAdapter())
     ..registerAdapter(MealPlanModelAdapter())
     ..registerAdapter(FamilyAdapter());
-  // disabled revenuw cat
+  // disabled revenue cat
   // await revenuwCatConfig();
   await dotenv.load(fileName: "env.env");
 
-  runApp(const MyApp());
+  // Check if user is logged in
+  final prefs = await SharedPreferences.getInstance();
+  final bool isLoggedIn = prefs.containsKey(currentUserUId) &&
+      prefs.getString(currentUserUId) != null &&
+      prefs.getString(currentUserUId)!.isNotEmpty;
+  final String? userUid = isLoggedIn ? prefs.getString(currentUserUId) : null;
+
+  FlutterNativeSplash.remove();
+  if (userUid != null) {
+    DbVersionManager.instance.init();
+    //TODO get user uid for migration
+    DbVersionManager.instance.checkAndMigrate(currentUserUId);
+  }
+
+  FlutterNativeSplash.remove();
+
+  runApp(MyApp(isLoggedIn: isLoggedIn));
 }
 
 void handleDeepLink(Uri deepLink) async {
@@ -59,8 +79,7 @@ void handleDeepLink(Uri deepLink) async {
         prefs.getString(currentUserUId) != null &&
         prefs.getString(currentUserUId)!.isNotEmpty) {
       final familyId = queryParams['familyId'];
-      navigatorKey.currentState
-          ?.pushReplacementNamed('/joinFamily', arguments: familyId);
+      navigatorKey.currentState?.pushReplacementNamed('/joinFamily', arguments: familyId);
     } else {
       navigatorKey.currentState?.pushNamed('/login');
     }
@@ -68,7 +87,9 @@ void handleDeepLink(Uri deepLink) async {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  final bool isLoggedIn;
+
+  const MyApp({super.key, required this.isLoggedIn});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -101,8 +122,7 @@ class _MyAppState extends State<MyApp> {
           ),
           BlocProvider(
             create: (context) => RecipeBloc(
-              recipeRepository:
-                  RepositoryProvider.of<RecipeRepository>(context),
+              recipeRepository: RepositoryProvider.of<RecipeRepository>(context),
             ),
           ),
           BlocProvider(
@@ -129,21 +149,22 @@ class _MyAppState extends State<MyApp> {
           ),
         ],
         child: MaterialApp(
-            navigatorKey: navigatorKey,
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-                dialogTheme: DialogTheme(
-              backgroundColor: kClrSecondary,
-              titleTextStyle: kMedText,
-              contentTextStyle: kSmallText,
-            )),
-            routes: {
-              '/joinFamily': (context) => const FamilyScreen(),
-              '/login': (context) => AuthScreen(),
-              '/home': (context) => const SplashScreen(),
-              // Add more routes as needed for other parts of your app
-            },
-            home: const SplashScreen()),
+          navigatorKey: navigatorKey,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+              dialogTheme: DialogTheme(
+            backgroundColor: kClrSecondary,
+            titleTextStyle: kMedText,
+            contentTextStyle: kSmallText,
+          )),
+          routes: {
+            '/joinFamily': (context) => const FamilyScreen(),
+            '/login': (context) => AuthScreen(),
+            '/home': (context) => const SplashScreen(),
+            // Add more routes as needed for other parts of your app
+          },
+          home: widget.isLoggedIn ? const SplashScreen() : AuthScreen(),
+        ),
       ),
     );
   }

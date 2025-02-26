@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:meal_planning/functions/network_connection.dart';
-import 'package:meal_planning/hive_db/db_functions.dart';
+import 'package:meal_planning/db_functions/hive_func.dart';
 import 'package:meal_planning/models/hive_models/user_model.dart';
 import 'package:meal_planning/repository/auth_repo.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';

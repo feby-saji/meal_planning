@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:meal_planning/blocs/user_type_bloc/bloc/user_type_bloc.dart';
 import 'package:meal_planning/functions/checkUserType.dart';
-import 'package:meal_planning/hive_db/db_functions.dart';
+import 'package:meal_planning/db_functions/hive_func.dart';
 import 'package:meal_planning/main.dart';
 import 'package:meal_planning/screens/connection%20failed/no_internet.dart';
 import 'package:meal_planning/utils/styles.dart';
@@ -38,7 +38,7 @@ class OnFreePLanScreen extends StatelessWidget {
             style: flatButtonStyle,
             onPressed: () async {
               // await RevenueCatUI.presentPaywallIfNeeded("premium");
-            
+
               // context.read<UserTypeBloc>().add(CheckUserType());
             },
             child: Text(

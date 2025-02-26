@@ -19,8 +19,8 @@ class ShopingListItemAdapter extends TypeAdapter<ShopingListItem> {
     return ShopingListItem(
       name: fields[0] as String,
       quantity: fields[2] as String,
-      unit: fields[3] as String,
-      category: fields[1] as String,
+      unit: fields[3] == null ? '' : fields[3] as String,
+      category: fields[1] == null ? 'others' : fields[1] as String,
     );
   }
 

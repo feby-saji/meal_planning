@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:meal_planning/hive_db/db_functions.dart';
+import 'package:meal_planning/db_functions/hive_func.dart';
 import 'package:meal_planning/screens/account/functions/gmail.dart';
 import 'package:meal_planning/screens/account/functions/url_launcher.dart';
 import 'package:meal_planning/screens/account/pages/about%20_us.dart';
@@ -71,8 +71,7 @@ class AccountScreen extends StatelessWidget {
                       // } else {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const FamilyScreen()),
+                        MaterialPageRoute(builder: (context) => const FamilyScreen()),
                       );
                       // }
                     },
@@ -92,8 +91,7 @@ class AccountScreen extends StatelessWidget {
                     onTap: () async {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const AboutUsScreen()),
+                        MaterialPageRoute(builder: (context) => const AboutUsScreen()),
                       );
                     },
                   ),

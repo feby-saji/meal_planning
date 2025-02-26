@@ -1,34 +1,49 @@
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'dart:isolate';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:meal_planning/screens/generate_recipe.dart/functions/prompt_function.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:image/image.dart' as img;
 
-Future<String?> downloadCompressAndGetPath(String imageUrl) async {
+// Full process function
+Future<String> downloadCompressAndConvertToWebP(String imageUrl) async {
   try {
-    String imageName = imageUrl.split('/').last;
-    // Download the image
-    var response = await http.get(Uri.parse(imageUrl));
-    Uint8List imageData = response.bodyBytes;
+    String imageName = imageUrl.split('/').last.split('.').first;
 
-    // Compress the image
-    List<int> compressedImageData = await FlutterImageCompress.compressWithList(
-      imageData,
-      minHeight: 300, // Adjust these parameters as needed
-      minWidth: 300,
-      quality: 30,
-    );
+    Uint8List imageData = await downloadImage(imageUrl);
+    logger.d('Image downloaded');
 
-    // Save the compressed image data to a file
-    final appDocumentDirectory = await getApplicationDocumentsDirectory();
-    final compressedImagePath =
-        '${appDocumentDirectory.path}/$imageName.jpg';
-    File(compressedImagePath).writeAsBytesSync(compressedImageData);
+    Uint8List compressedImageData = await compute(compressAndConvertToWebP, imageData);
+    // Uint8List compressedImageData = await compressAndConvertToWebP(imageData);
+    logger.d('Image compressed and converted to WebP');
 
-    // Return the path of the compressed image
-    return compressedImagePath;
+    return await saveImage(compressedImageData, imageName);
   } catch (e) {
     print('Error: $e');
-    return null;
+    return '';
   }
+}
+
+Future<Uint8List> downloadImage(String imageUrl) async {
+  var response = await http.get(Uri.parse(imageUrl));
+  return response.bodyBytes;
+}
+
+Future<Uint8List> compressAndConvertToWebP(Uint8List imageData) async {
+  return await Isolate.run(() {
+    // Decode the image
+    img.Image? image = img.decodeImage(imageData);
+    if (image == null) throw Exception("Invalid image data");
+
+    // Encode to WebP format with compression
+    return Uint8List.fromList(img.encodeJpg(image, quality: 30));
+  });
+}
+
+Future<String> saveImage(Uint8List imageData, String imageName) async {
+  final appDirectory = await getApplicationDocumentsDirectory();
+  final imagePath = '${appDirectory.path}/$imageName.webp';
+  await File(imagePath).writeAsBytes(imageData);
+  return imagePath;
 }

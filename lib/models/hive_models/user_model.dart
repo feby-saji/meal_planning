@@ -1,4 +1,4 @@
-import 'package:hive_flutter/adapters.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:meal_planning/models/hive_models/family.dart';
 import 'package:meal_planning/models/hive_models/meal_plan_model.dart';
 import 'package:meal_planning/models/hive_models/recipe_model.dart';
@@ -6,7 +6,7 @@ import 'package:meal_planning/models/hive_models/shoppinglist_item.dart';
 part 'user_model.g.dart';
 
 @HiveType(typeId: 1)
-class UserModel {
+class UserModel extends HiveObject {
   @HiveField(0)
   String uid;
   @HiveField(1)
@@ -38,5 +38,3 @@ class UserModel {
     this.family,
   });
 }
-
-

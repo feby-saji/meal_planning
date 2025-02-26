@@ -1,10 +1,10 @@
-import 'dart:convert';
+import 'package:hive_ce/hive.dart';
 
-import 'package:hive_flutter/hive_flutter.dart';
 part 'recipe_model.g.dart';
 
 @HiveType(typeId: 2)
-class RecipeModel {
+class RecipeModel extends HiveObject {
+  // TODO remove in 2nd migration
   @HiveField(0)
   String img;
   @HiveField(1)
@@ -31,10 +31,16 @@ class RecipeModel {
   List<String> steps;
   @HiveField(12)
   bool isFav;
+  @HiveField(13)
+  String thumbnailImg;
+  @HiveField(14)
+  String fullSizeImg;
 
   RecipeModel({
     required this.img,
     required this.title,
+    required this.thumbnailImg,
+    required this.fullSizeImg,
     this.servings,
     this.carb,
     this.cal,
@@ -74,9 +80,10 @@ class RecipeModel {
       prep: removePt(map['prepTime']),
       cook: removePt(map['cookTime']),
       isFav: false,
-      ingredients:
-          List<String>.from((map['recipeIngredient'] as List<dynamic>)),
+      ingredients: List<String>.from((map['recipeIngredient'] as List<dynamic>)),
       steps: instructions,
+      fullSizeImg: map['image']['url'] as String,
+      thumbnailImg: map['image']['url'] as String,
     );
   }
 
@@ -94,6 +101,8 @@ class RecipeModel {
       cook: json['cook_time'].toString(),
       toal: json['total_cook_and_preparation_time'].toString(),
       ingredients: List<String>.from(json['ingredients']),
+      fullSizeImg: '',
+      thumbnailImg: '',
     );
   }
 }

@@ -39,8 +39,7 @@ class MainScreen extends StatelessWidget {
             ),
             bottomNavigationBar: const BottomNavBarWidget(),
             floatingActionButton: Container(
-                margin: const EdgeInsets.only(right: 16.0),
-                child: _buildAddButton(ind, context)),
+                margin: const EdgeInsets.only(right: 16.0), child: _buildAddButton(ind, context)),
           );
         });
   }
@@ -65,20 +64,18 @@ class MainScreen extends StatelessWidget {
     );
   }
 
-  void showAddRecipeDialog(
-      BuildContext context, TextEditingController controller) {
+  void showAddRecipeDialog(BuildContext context, TextEditingController controller) {
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.grey.shade200, // Set background color
+          backgroundColor: Colors.grey.shade200,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          title: const Text('Add Recipe Link',
-              style: TextStyle(color: Colors.black)), // Set title text color
+          title: const Text('Add Recipe Link', style: TextStyle(color: Colors.black)),
           content: Form(
             key: formKey,
             child: Column(
@@ -87,10 +84,8 @@ class MainScreen extends StatelessWidget {
               children: [
                 const Text(
                   'Enter the URL of the recipe:',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.black), // Set content text color
+                  style:
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.normal, color: Colors.black),
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -99,15 +94,14 @@ class MainScreen extends StatelessWidget {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a recipe URL';
                     }
-                    // You can add additional validation here if needed
+                    // can add additional validation here if needed
                     return null;
                   },
                   decoration: InputDecoration(
                     hintText: 'https://www.example.com/recipe',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                          color: Colors.red), // Initial border color
+                      borderSide: const BorderSide(color: Colors.red), // Initial border color
                     ),
                   ),
                 ),
@@ -121,6 +115,7 @@ class MainScreen extends StatelessWidget {
                 style: TextStyle(color: Colors.red),
               ),
               onPressed: () {
+                controller.clear();
                 Navigator.of(context).pop();
               },
             ),
@@ -130,15 +125,12 @@ class MainScreen extends StatelessWidget {
                 backgroundColor: Colors.green.shade400,
               ),
               child: const Text('Add Recipe',
-                  style:
-                      TextStyle(color: Colors.white)), // Set button text color
+                  style: TextStyle(color: Colors.white)), // Set button text color
               onPressed: () {
                 if (formKey.currentState!.validate()) {
                   String recipeLink = controller.text.trim();
                   Navigator.of(context).pop();
-                  context
-                      .read<RecipeBloc>()
-                      .add(AddNewRecipeEvent(url: recipeLink));
+                  context.read<RecipeBloc>().add(AddNewRecipeEvent(url: recipeLink));
                   controller.clear();
                 }
               },
@@ -185,14 +177,12 @@ class MainScreen extends StatelessWidget {
                       hintText: 'Item name',
                       hintStyle: TextStyle(color: Colors.grey.shade600),
                       filled: true,
-                      fillColor: Colors
-                          .grey.shade100, // Light background for input field
+                      fillColor: Colors.grey.shade100, // Light background for input field
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
                         borderSide: BorderSide.none,
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 20.0),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
                     ),
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -214,8 +204,7 @@ class MainScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12.0),
                         borderSide: BorderSide.none,
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 20.0),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
                     ),
                   ),
                   const SizedBox(height: 20),

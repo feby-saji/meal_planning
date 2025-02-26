@@ -19,6 +19,8 @@ class RecipeModelAdapter extends TypeAdapter<RecipeModel> {
     return RecipeModel(
       img: fields[0] as String,
       title: fields[1] as String,
+      thumbnailImg: fields[13] as String,
+      fullSizeImg: fields[14] as String,
       servings: fields[2] as String?,
       carb: fields[3] as String?,
       cal: fields[4] as String?,
@@ -36,7 +38,7 @@ class RecipeModelAdapter extends TypeAdapter<RecipeModel> {
   @override
   void write(BinaryWriter writer, RecipeModel obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(15)
       ..writeByte(0)
       ..write(obj.img)
       ..writeByte(1)
@@ -62,7 +64,11 @@ class RecipeModelAdapter extends TypeAdapter<RecipeModel> {
       ..writeByte(11)
       ..write(obj.steps)
       ..writeByte(12)
-      ..write(obj.isFav);
+      ..write(obj.isFav)
+      ..writeByte(13)
+      ..write(obj.thumbnailImg)
+      ..writeByte(14)
+      ..write(obj.fullSizeImg);
   }
 
   @override

@@ -1,11 +1,12 @@
+import 'dart:isolate';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:meal_planning/hive_db/db_functions.dart';
+import 'package:meal_planning/db_functions/hive_func.dart';
 import 'package:meal_planning/models/hive_models/recipe_model.dart';
 import 'package:meal_planning/repository/get_img.dart';
 import 'package:meal_planning/repository/recipe_repo.dart';
 import 'package:meal_planning/screens/family/widgets/snackbar.dart';
-
 import '../../../functions/network_connection.dart';
 part 'recipe_event.dart';
 part 'recipe_state.dart';
@@ -27,8 +28,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     on<SaveGeneratedRecipe>(_saveGeneratedRecipe);
   }
 
-  _saveGeneratedRecipe(
-      SaveGeneratedRecipe event, Emitter<RecipeState> emit) async {
+  _saveGeneratedRecipe(SaveGeneratedRecipe event, Emitter<RecipeState> emit) async {
     bool exists = await HiveDb.checkIfRecipeExists(event.recipe);
     if (!exists) {
       List<RecipeModel> recipes = await HiveDb.addNewRecipe(event.recipe);
@@ -79,10 +79,11 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
       dynamic result = await recipeRepository.getRecipeContent(event.url);
 
       if (result is RecipeModel) {
-        // download and compress the image
-        String? imgPath = await downloadCompressAndGetPath(result.img);
+        // Download and compress the image
+        String? imgPath = await downloadCompressAndConvertToWebP(result.img);
+        print('Image path: $imgPath');
 
-        if (imgPath != null) {
+        if (imgPath.isNotEmpty) {
           bool exists = await HiveDb.checkIfRecipeExists(result);
           if (!exists) {
             result.img = imgPath;
@@ -93,8 +94,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
             return emit(RecipeFetchingFailedState(err: 'recipe already added'));
           }
         } else {
-          return emit(
-              RecipeFetchingFailedState(err: 'failed to fetch. Try again'));
+          return emit(RecipeFetchingFailedState(err: 'failed to fetch. Try again'));
         }
       } else {
         return emit(RecipeFetchingFailedState(err: result));
@@ -108,14 +108,11 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     List<RecipeModel> recipes;
     await HiveDb.updateFav(event.recipe, event.isFav);
 
-    RecipeModel recipeToUpdate =
-        _cachedRecipes!.firstWhere((element) => element == event.recipe);
+    RecipeModel recipeToUpdate = _cachedRecipes!.firstWhere((element) => element == event.recipe);
     recipeToUpdate.isFav = event.isFav;
 
     if (isFavPage) {
-      recipes = _cachedRecipes!
-          .where((recipe) => recipe.isFav != event.isFav)
-          .toList();
+      recipes = _cachedRecipes!.where((recipe) => recipe.isFav != event.isFav).toList();
 
       emit(RecipeLoadSuccessState(recipes: recipes));
     } else {
@@ -133,8 +130,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     if (_cachedRecipes != null && event.fav == true) {
       seachForFav = event.fav;
 
-      List<RecipeModel> recipes =
-          _cachedRecipes!.where((recipe) => recipe.isFav == true).toList();
+      List<RecipeModel> recipes = _cachedRecipes!.where((recipe) => recipe.isFav == true).toList();
 
       if (recipes.isEmpty) {
         emit(RecipeLoadFailedState(err: 'no favourite recipes found'));
@@ -151,8 +147,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     if (event.val.isEmpty) {
       add(SortRecipesEvent(fav: seachForFav));
     } else {
-      List<RecipeModel> recipes =
-          await HiveDb.searchRecipes(event.val, seachForFav);
+      List<RecipeModel> recipes = await HiveDb.searchRecipes(event.val, seachForFav);
 
       if (recipes.isEmpty) {
         emit(RecipeLoadFailedState(err: 'no recipes found'));
